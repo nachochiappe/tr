@@ -1,7 +1,7 @@
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView, DetailView, CreateView
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .forms import PacienteCreateForm
@@ -45,5 +45,7 @@ class PacienteCreateView(LoginRequiredMixin, CreateView):
         user = User.objects.create_user(str(form.cleaned_data['dni']), form.cleaned_data['mail'], str(form.cleaned_data['dni']))
         user.first_name = form.cleaned_data['nombre']
         user.last_name = form.cleaned_data['apellido']
+        grupo = Group.objects.get(name='pacientes')
+        user.groups.add(grupo)
         user.save()
         return super().form_valid(form)

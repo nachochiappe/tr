@@ -1,11 +1,36 @@
-<div>
-    <ul class="nav nav-pills">
-        <li class="nav-item" class="active"><a class="nav-link" href='{% url "home" %}'>Home</a></li>
-        <li class="nav-item"><a class="nav-link" href='{% url "especialidad-crear" %}'>Crear Especialidad</a></li>
-        <li class="nav-item"><a class="nav-link" href='{% url "especialidades" %}'>Lista de Especialidades</a></li>
-        <li class="nav-item"><a class="nav-link" href='{% url "medico-crear" %}'>Crear Médico</a></li>
-        <li class="nav-item"><a class="nav-link" href='{% url "medicos" %}'>Lista de Médicos</a></li>
-        <li class="nav-item"><a class="nav-link" href='{% url "paciente-crear" %}'>Crear Paciente</a></li>
-        <li class="nav-item"><a class="nav-link" href='{% url "pacientes" %}'>Lista de Pacientes</a></li>
-    </ul>
-</div>
+{% load main_extras %}
+
+{% if user.is_authenticated %}
+
+    <div>
+    {% if request.user|has_group:"medicos" %}
+        <ul class="nav nav-pills">
+            <li class="nav-item" class="active"><a class="nav-link" href='{% url "home" %}'>Home</a></li>
+            <li class="nav-item"><a class="nav-link" href='{% url "pacientes" %}'>Todos los Pacientes</a></li>
+            <li class="nav-item"><a class="nav-link" href='{% url "pacientes" %}'>Mis Pacientes</a></li>
+            <li class="nav-item"><a class="nav-link">Mis Alertas</a></li>
+            <li class="nav-item"><a class="nav-link">Agenda Médica</a></li>
+        </ul>
+    {% elif request.user|has_group:"pacientes" %}
+        <ul class="nav nav-pills">
+            <li class="nav-item" class="active"><a class="nav-link" href='{% url "home" %}'>Home</a></li>
+            <li class="nav-item"><a class="nav-link">Mis Datos Personales</a></li>
+            <li class="nav-item"><a class="nav-link">Mis Medicaciones</a></li>
+            <li class="nav-item"><a class="nav-link">Mis Estudios</a></li>
+            <li class="nav-item"><a class="nav-link">Mis Alertas</a></li>
+        </ul>
+    {% else %}
+        <ul class="nav nav-pills">
+            <li class="nav-item" class="active"><a class="nav-link" href='{% url "home" %}'>Home</a></li>
+            <li class="nav-item"><a class="nav-link" href='{% url "especialidad-crear" %}'>Crear Especialidad</a></li>
+            <li class="nav-item"><a class="nav-link" href='{% url "especialidades" %}'>Todas las Especialidades</a></li>
+            <li class="nav-item"><a class="nav-link" href='{% url "medico-crear" %}'>Crear Médico</a></li>
+            <li class="nav-item"><a class="nav-link" href='{% url "medicos" %}'>Todos los Médicos</a></li>
+            <li class="nav-item"><a class="nav-link" href='{% url "paciente-crear" %}'>Crear Paciente</a></li>
+            <li class="nav-item"><a class="nav-link" href='{% url "pacientes" %}'>Todos los Pacientes</a></li>
+        </ul>
+    {% endif %}
+
+    </div>
+
+{% endif %}

@@ -1,7 +1,7 @@
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView, DetailView, CreateView
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .forms import EspecialidadCreateForm, MedicoCreateForm
@@ -26,6 +26,16 @@ class MedicoListView(LoginRequiredMixin, ListView):
         return queryset
 
 
+# Detalle de Médico
+class MedicoDetailView(LoginRequiredMixin, DetailView):
+    queryset = Medico.objects.all()
+
+    def get_object(self, *args, **kwargs):
+        medico_id = self.kwargs.get('id')
+        obj = get_object_or_404(Medico, dni=medico_id)
+        return obj
+
+
 # Creación de Medicos
 class MedicoCreateView(LoginRequiredMixin, CreateView):
     form_class = MedicoCreateForm
@@ -36,10 +46,13 @@ class MedicoCreateView(LoginRequiredMixin, CreateView):
         user = User.objects.create_user(str(form.cleaned_data['dni']), form.cleaned_data['mail'], str(form.cleaned_data['dni']))
         user.first_name = form.cleaned_data['nombre']
         user.last_name = form.cleaned_data['apellido']
+        grupo = Group.objects.get(name='medicos')
+        user.groups.add(grupo)
         user.save()
         return super().form_valid(form)
 
-# Lista de Medicos
+
+# Lista de Especialidades
 class EspecialidadListView(LoginRequiredMixin, ListView):
     template_name = 'medicos/especialidad_list.html'
 

@@ -3,15 +3,14 @@
 {% block content %}
 
 {% if form.errors %}
-<p>Your username and password didn't match. Please try again.</p>
+<p>Usuario y/o contraseña incorrectos. Por favor, intente nuevamente.</p>
 {% endif %}
 
 {% if next %}
     {% if user.is_authenticated %}
-    <p>Your account doesn't have access to this page. To proceed,
-    please login with an account that has access.</p>
+    <p>Su usuario no tiene permisos para acceder a esta página.</p>
     {% else %}
-    <p>Please login to see this page.</p>
+    <p>Por favor, inicie sesión.</p>
     {% endif %}
 {% endif %}
 

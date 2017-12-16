@@ -31,4 +31,5 @@ urlpatterns = [
     url(r'^medicos/crear/$', MedicoCreateView.as_view(), name='medico-crear'),
     url(r'^medicos/especialidades/$', EspecialidadListView.as_view(), name='especialidades'),
     url(r'^medicos/especialidades/crear/$', EspecialidadCreateView.as_view(), name='especialidad-crear'),
+    url(r'^medicos/(?P<id>\w+)/$', MedicoDetailView.as_view(), name='medico-detalle'),
 ]

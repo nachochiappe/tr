@@ -19,4 +19,7 @@
         <dd class="col-sm-9">{{ object.mail }}</dd>
     </dl>
 
+{% if request.user.is_staff %}
+    <button type="button" class="btn btn-danger">Eliminar Paciente</button>
+{% endif %}
 {% endblock %}
