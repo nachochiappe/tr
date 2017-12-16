@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <h2>Detalle de Médico</h2>
+
+    <dl class="row">
+        <dt class="col-sm-3">Nombre</dt>
+        <dd class="col-sm-9">{{ object.nombre }}</dd>
+        <dt class="col-sm-3">Apellido</dt>
+        <dd class="col-sm-9">{{ object.apellido }}</dd>
+        <dt class="col-sm-3">DNI</dt>
+        <dd class="col-sm-9">{{ object.dni }}</dd>
+        <dt class="col-sm-3">Fecha de Nacimiento</dt>
+        <dd class="col-sm-9">{{ object.fecnac }}</dd>
+        <dt class="col-sm-3">País</dt>
+        <dd class="col-sm-9">{{ object.pais }}</dd>
+        <dt class="col-sm-3">Mail</dt>
+        <dd class="col-sm-9">{{ object.mail }}</dd>
+    </dl>
+
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <h2>Lista de Pacientes</h2>
+
+    <table class="table table-sm table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Apellido</th>
+                <th scope="col">DNI</th>
+                <th scope="col">Fecha de Nacimiento</th>
+                <th scope="col">País</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for paciente in object_list %}
+            <tr>
+                <th scope="row"><a href='{{ paciente.get_absolute_url }}'>{{ paciente.id }}</a></th>
+                <td>{{ paciente.nombre }}</td>
+                <td>{{ paciente.apellido }}</td>
+                <td>{{ paciente.dni }}</td>
+                <td>{{ paciente.fecnac }}</td>
+                <td>{{ paciente.pais }}</td>
+            </tr>
+            {% endfor %}
+      </tbody>
+    </table>
+
+{% endblock %}
