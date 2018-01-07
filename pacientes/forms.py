@@ -1,7 +1,7 @@
 from django import forms
 from django_countries.fields import CountryField
 
-from .models import Paciente
+from .models import Paciente, Medicamento
 
 class PacienteCreateForm(forms.ModelForm):
 
@@ -24,3 +24,16 @@ class PacienteCreateForm(forms.ModelForm):
             "mail" : "E-Mail",
             "pais" : "País",
         }
+
+
+class MedicamentoCreateForm(forms.ModelForm):
+
+    class Meta:
+        model = Medicamento
+        fields = [
+            'medicamento',
+            'posologia',
+            'fecha_inicio',
+            'fecha_fin',
+            'dosis_completadas',
+        ]
