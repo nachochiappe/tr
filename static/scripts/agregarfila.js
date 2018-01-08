@@ -41,8 +41,8 @@ $(document).ready(function () {
             $("table.table-sm.table-hover").append(newRow);
         }
 		$(function() {
-			$("input[name^=fecha_inicio]").datepicker({dateFormat: 'yy-mm-dd'});
-			$("input[name^=fecha_fin]").datepicker({dateFormat: 'yy-mm-dd'});
+			$("input[name^=fecha_inicio]").datepicker({dateFormat: 'yy-mm-dd', changeMonth: true, changeYear: true});
+			$("input[name^=fecha_fin]").datepicker({dateFormat: 'yy-mm-dd', changeMonth: true, changeYear: true});
 		});
     });
 
