@@ -1,3 +1,22 @@
+$.datepicker.regional['es'] = {
+ closeText: 'Cerrar',
+ prevText: '< Ant',
+ nextText: 'Sig >',
+ currentText: 'Hoy',
+ monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+ monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
+ dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+ dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
+ dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
+ weekHeader: 'Sm',
+ dateFormat: 'dd/mm/yy',
+ firstDay: 1,
+ isRTL: false,
+ showMonthAfterYear: false,
+ yearSuffix: ''
+ };
+$.datepicker.setDefaults($.datepicker.regional['es']);
+
 $(document).ready(function () {
     $("#addrow").on("click", function () {
         if($("#addrow").hasClass('disabled')) {
@@ -21,6 +40,10 @@ $(document).ready(function () {
             newRow.append(cols);
             $("table.table-sm.table-hover").append(newRow);
         }
+		$(function() {
+			$("input[name^=fecha_inicio]").datepicker({dateFormat: 'yy-mm-dd'});
+			$("input[name^=fecha_fin]").datepicker({dateFormat: 'yy-mm-dd'});
+		});
     });
 
     $("table.table-sm.table-hover.medact").on("click", ".ibtnDel", function (event) {
@@ -31,9 +54,6 @@ $(document).ready(function () {
 
         $("#addrow").removeClass('disabled');
     });
-
-    $(function() {
-        $("input[name^=fecha_inicio]").datepicker({dateFormat: 'yyyy-mm-dd'});
-        $("input[name^=fecha_fin]").datepicker({dateFormat: 'yyyy-mm-dd'});
-    });
+	
 });
+
