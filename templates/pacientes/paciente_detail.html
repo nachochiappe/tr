@@ -20,6 +20,14 @@
     </dl>
     </div>
 
+{% if request.user.is_staff %}
+    <div>
+        <button type="button" class="btn btn-info btn-sm">Editar Datos</button>
+        <button type="button" class="btn btn-danger btn-sm">Eliminar Paciente</button>
+        </br></br>
+    </div>
+{% endif %}
+
     <div id="accordion" role="tablist">
         <div class="card">
             <div class="card-header" role="tab" id="headingOne">
@@ -58,7 +66,7 @@
                                 <td>{{ medicamento.fecha_inicio }}</td>
                                 <td>{{ medicamento.fecha_fin }}</td>
                                 <td>{{ medicamento.dosis_completadas }}</td>
-                                <td><input type="button" class="ibtnEdit btn btn-sm btn-success" value="Editar">
+                                <td><input type="button" class="ibtnEdit btn btn-sm btn-info" value="Editar">
                                     <input type="button" class="ibtnBorrar btn btn-sm btn-danger" value="Borrar"></td>
                             </tr>
                             {% endfor %}
@@ -81,7 +89,7 @@
 
             <div id="estudiosyactividades" class="collapse" role="tabpanel" aria-labelledby="headingTwo" data-parent="#accordion">
                 <div class="card-body">
-                    <button type="button" class="btn btn-success">+ Nuevo Estudio o Actividad</button>
+                    <button type="button" class="btn btn-success btn-sm">+ Nuevo Estudio o Actividad</button>
                 </div>
             </div>
         </div>
@@ -96,19 +104,13 @@
 
             <div id="acciones" class="collapse" role="tabpanel" aria-labelledby="headingThree" data-parent="#accordion">
                 <div class="card-body">
-                    <ul>
-                        <li>Derivar paciente</li>
-                        <li>Enviar correo electrónico al paciente</li>
-                        <li>Enviar mensaje (dentro de TR)</li>
-                    </ul>
+                    <div class="list-group">
+                        <a class="list-group-item list-group-item-action">Derivar paciente</a>
+                        <a class="list-group-item list-group-item-action">Enviar correo electrónico al paciente</a>
+                        <a class="list-group-item list-group-item-action">Enviar mensaje (dentro de TR)</a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-
-    </br>
-
-{% if request.user.is_staff %}
-    <button type="button" class="btn btn-danger">Eliminar Paciente</button>
-{% endif %}
 {% endblock %}

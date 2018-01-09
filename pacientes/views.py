@@ -73,7 +73,7 @@ class PacienteMedicamentoEstudio(SingleObjectMixin, FormView):
             print(form.cleaned_data)
             return self.form_valid(form)
         else:
-            print("not valid")
+            print(form.errors)
             print(form.cleaned_data)
             return self.form_invalid(form)
         # return super().post(request, *args, **kwargs)

@@ -35,5 +35,4 @@ class MedicamentoCreateForm(forms.ModelForm):
             'posologia',
             'fecha_inicio',
             'fecha_fin',
-            'dosis_completadas',
         ]
