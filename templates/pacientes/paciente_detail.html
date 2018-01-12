@@ -1,32 +1,49 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <div>
-    <h2>Detalle de Paciente</h2>
-
-    <dl class="row">
-        <dt class="col-sm-3">Nombre</dt>
-        <dd class="col-sm-9">{{ object.paciente.nombre }}</dd>
-        <dt class="col-sm-3">Apellido</dt>
-        <dd class="col-sm-9">{{ object.paciente.apellido }}</dd>
-        <dt class="col-sm-3">DNI</dt>
-        <dd class="col-sm-9">{{ object.paciente.dni }}</dd>
-        <dt class="col-sm-3">Fecha de Nacimiento</dt>
-        <dd class="col-sm-9">{{ object.paciente.fecnac }}</dd>
-        <dt class="col-sm-3">País</dt>
-        <dd class="col-sm-9">{{ object.paciente.pais }}</dd>
-        <dt class="col-sm-3">Mail</dt>
-        <dd class="col-sm-9">{{ object.paciente.mail }}</dd>
-    </dl>
+    <div class="card">
+        <h5 class="card-header">Detalle del Paciente</h5>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-4">
+                    <table class="table table-user-information">
+                        <tbody>
+                            <tr>
+                                <td>Nombre</td>
+                                <td>{{ object.paciente.nombre }}</td>
+                            </tr>
+                            <tr>
+                                <td>Apellido</td>
+                                <td>{{ object.paciente.apellido }}</td>
+                            </tr>
+                            <tr>
+                                <td>DNI</td>
+                                <td>{{ object.paciente.dni }}</td>
+                            </tr>
+                            <tr>
+                                <td>Fecha de Nacimiento</td>
+                                <td>{{ object.paciente.fecnac }}</td>
+                            </tr>
+                            <tr>
+                                <td>País</td>
+                                <td>{{ object.paciente.pais }}</td>
+                            </tr>
+                            <tr>
+                                <td>Mail</td>
+                                <td>{{ object.paciente.mail }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        {% if request.user.is_staff %}
+        <div class="card-footer">
+            <button type="button" class="btn btn-info btn-sm">Editar Datos</button>
+            <button type="button" class="btn btn-danger btn-sm">Eliminar Paciente</button>
+        </div>
+        {% endif %}
     </div>
-
-{% if request.user.is_staff %}
-    <div>
-        <button type="button" class="btn btn-info btn-sm">Editar Datos</button>
-        <button type="button" class="btn btn-danger btn-sm">Eliminar Paciente</button>
-        </br></br>
-    </div>
-{% endif %}
 
     <div id="accordion" role="tablist">
         <div class="card">
