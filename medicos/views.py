@@ -72,4 +72,4 @@ class EspecialidadListView(LoginRequiredMixin, ListView):
 class EspecialidadCreateView(LoginRequiredMixin, CreateView):
     form_class = EspecialidadCreateForm
     template_name = 'medicos/especialidad_crear.html'
-    success_url = '/medicos/especialidad/'
+    success_url = '/medicos/especialidades/'

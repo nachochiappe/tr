@@ -2,23 +2,26 @@
 
 {% block content %}
 
-    <h2>Lista de Especialidades</h2>
-
-    <table class="table table-sm table-striped">
-        <thead class="thead-dark">
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Especialidad</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for especialidad in object_list %}
-            <tr>
-                <th scope="row">{{ especialidad.id }}</th>
-                <td>{{ especialidad.nombre }}</td>
-            </tr>
-            {% endfor %}
-      </tbody>
-    </table>
+    <div class="card" style="margin-top: 15px;">
+        <h5 class="card-header">Lista de Especialidades</h5>
+        <div class="card-body">
+            <table class="table table-sm table-striped">
+                <thead class="thead-light">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Especialidad</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for especialidad in object_list %}
+                    <tr>
+                        <th scope="row">{{ especialidad.id }}</th>
+                        <td>{{ especialidad.nombre }}</td>
+                    </tr>
+                    {% endfor %}
+              </tbody>
+            </table>
+        </div>
+    </div>
 
 {% endblock %}

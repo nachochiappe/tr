@@ -6,6 +6,8 @@ from django.views.generic.detail import SingleObjectMixin
 from django.contrib.auth.models import User, Group
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+import datetime
+
 from .forms import PacienteCreateForm, MedicamentoCreateForm
 from .models import Paciente, Medicamento, Estudio
 
@@ -37,8 +39,11 @@ class PacienteDisplay(DetailView):
     def get_object(self, *args, **kwargs):
         paciente_id = self.kwargs.get('id')
         paciente = get_object_or_404(Paciente, id=paciente_id)
-        medicamentos = Medicamento.objects.filter(paciente=paciente).values()
-        obj = {'paciente': paciente, 'medicamentos': medicamentos}
+        medicamentos_vigentes = Medicamento.objects.filter(paciente=paciente).values()
+        medicamentos_vigentes = medicamentos_vigentes.filter(fecha_fin__gte=datetime.date.today())
+        medicamentos_novigentes = Medicamento.objects.filter(paciente=paciente).values()
+        medicamentos_novigentes = medicamentos_novigentes.filter(fecha_fin__lt=datetime.date.today())
+        obj = {'paciente': paciente, 'medicamentos_vigentes': medicamentos_vigentes, 'medicamentos_novigentes': medicamentos_novigentes}
         return obj
 
 
@@ -49,15 +54,25 @@ class PacienteMedicamentoEstudio(SingleObjectMixin, FormView):
     def get_object(self, *args, **kwargs):
         paciente_id = self.kwargs.get('id')
         paciente = get_object_or_404(Paciente, id=paciente_id)
-        medicamentos = Medicamento.objects.filter(paciente=paciente).values()
-        obj = {'paciente': paciente, 'medicamentos': medicamentos}
+        medicamentos_vigentes = Medicamento.objects.filter(paciente=paciente).values()
+        medicamentos_vigentes = medicamentos_vigentes.filter(fecha_fin__gte=datetime.date.today())
+        medicamentos_novigentes = Medicamento.objects.filter(paciente=paciente).values()
+        medicamentos_novigentes = medicamentos_novigentes.filter(fecha_fin__lt=datetime.date.today())
+        obj = {'paciente': paciente, 'medicamentos_vigentes': medicamentos_vigentes, 'medicamentos_novigentes': medicamentos_novigentes}
         return obj
 
     def form_valid(self, form):
         medicamento = Medicamento()
         medicamento.paciente = self.object['paciente']
         medicamento.medicamento = form.cleaned_data['medicamento']
-        medicamento.posologia = form.cleaned_data['posologia']
+        if form.cleaned_data['posologia_unidad'] == "horas":
+            medicamento.posologia = form.cleaned_data['posologia_cantidad'] * 60
+        elif form.cleaned_data['posologia_unidad'] == "dias":
+            medicamento.posologia = form.cleaned_data['posologia_cantidad'] * 60 * 24
+        elif form.cleaned_data['posologia_unidad'] == "semanas":
+            medicamento.posologia = form.cleaned_data['posologia_cantidad'] * 60 * 24 * 7
+        else:
+            medicamento.posologia = form.cleaned_data['posologia_cantidad'] * 60 * 24 * 30
         medicamento.medico = medicamento.paciente.medico
         medicamento.fecha_inicio = form.cleaned_data['fecha_inicio']
         medicamento.fecha_fin = form.cleaned_data['fecha_fin']
@@ -70,9 +85,9 @@ class PacienteMedicamentoEstudio(SingleObjectMixin, FormView):
         self.object = self.get_object()
         form = MedicamentoCreateForm(request.POST)
         if form.is_valid():
-            print(form.cleaned_data)
             return self.form_valid(form)
         else:
+            print(request.POST)
             print(form.errors)
             print(form.cleaned_data)
             return self.form_invalid(form)

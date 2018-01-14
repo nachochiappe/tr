@@ -2,20 +2,25 @@
 
 {% block content %}
 
-    <h2>Detalle de Médico</h2>
+    <div class="card" style="margin-top: 15px;">
+        <h5 class="card-header">Detalle del Médico</h5>
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3">Nombre</dt>
+                <dd class="col-sm-9">{{ object.nombre }}</dd>
+                <dt class="col-sm-3">Apellido</dt>
+                <dd class="col-sm-9">{{ object.apellido }}</dd>
+                <dt class="col-sm-3">DNI</dt>
+                <dd class="col-sm-9">{{ object.dni }}</dd>
+                <dt class="col-sm-3">Mail</dt>
+                <dd class="col-sm-9">{{ object.mail }}</dd>
+            </dl>
+        </div>
+        {% if request.user.is_staff %}
+        <div class="card-footer">
+            <button type="button" class="btn btn-danger">Eliminar Médico</button>
+        </div>
+        {% endif %}
+    </div>
 
-    <dl class="row">
-        <dt class="col-sm-3">Nombre</dt>
-        <dd class="col-sm-9">{{ object.nombre }}</dd>
-        <dt class="col-sm-3">Apellido</dt>
-        <dd class="col-sm-9">{{ object.apellido }}</dd>
-        <dt class="col-sm-3">DNI</dt>
-        <dd class="col-sm-9">{{ object.dni }}</dd>
-        <dt class="col-sm-3">Mail</dt>
-        <dd class="col-sm-9">{{ object.mail }}</dd>
-    </dl>
-
-{% if request.user.is_staff %}
-    <button type="button" class="btn btn-danger">Eliminar Médico</button>
-{% endif %}
 {% endblock %}

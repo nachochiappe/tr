@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load mathfilters %}
+
 {% block content %}
     <div class="card" style="margin-top: 15px;">
         <h5 class="card-header">Detalle del Paciente</h5>
@@ -26,7 +28,7 @@
                             </tr>
                             <tr>
                                 <td>País</td>
-                                <td>{{ object.paciente.pais }}</td>
+                                <td>{{ object.paciente.pais.name }}</td>
                             </tr>
                             <tr>
                                 <td>Mail</td>
@@ -40,29 +42,50 @@
         {% if request.user.is_staff %}
         <div class="card-footer">
             <button type="button" class="btn btn-info btn-sm">Editar Datos</button>
-            <button type="button" class="btn btn-danger btn-sm">Eliminar Paciente</button>
+            <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#pacienteModal">Eliminar Paciente</button>
+        </div>
+
+        <!-- Modal Paciente -->
+        <div class="modal fade" id="pacienteModal" tabindex="-1" role="dialog" aria-labelledby="pacienteModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h6 class="modal-title" id="pacienteModalLabel">Eliminar Paciente</h6>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        ¿Está seguro de que desea eliminar el paciente?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-sm btn-danger">Eliminar</button>
+                    </div>
+                </div>
+            </div>
         </div>
         {% endif %}
     </div>
 
-    <div id="accordion" role="tablist">
+    <div id="accordion" role="tablist" style="margin-top: 15px; margin-bottom: 15px">
         <div class="card">
             <div class="card-header" role="tab" id="headingOne">
-                <h5 class="mb-0">
+                <h6 class="mb-0">
                     <a data-toggle="collapse" href="#medicamentos" role="button" aria-expanded="true" aria-controls="medicamentos">
                         Medicamentos
                     </a>
-                </h5>
+                </h6>
             </div>
 
             <div id="medicamentos" class="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
                 <div class="card-body">
-                    <h5>Medicaciones Actuales</h5></br>
+                    <h6>Medicaciones Actuales</h6></br>
                     <input type="button" class="btn btn-success btn-sm" id="addrow" value="+ Nueva Medicación"></br></br>
 
                     <form method="POST" id="form_medicamento">{% csrf_token %}</form>
 
-                    <table class="table table-sm table-hover medact">
+                    <table class="table table-sm table-hover" name="medvigentes">
                         <thead class="thead-light">
                             <tr>
                                 <th scope="col">Medicamento</th>
@@ -75,33 +98,91 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {% for medicamento in object.medicamentos %}
+                            {% for medicamento in object.medicamentos_vigentes %}
                             <tr>
                                 <th scope="row">{{ medicamento.medicamento }}</th>
-                                <td>{{ medicamento.posologia }}</td>
-                                <td>{{ medicamento.medico.apellido }}, {{ medicamento.medico.nombre }}</td>
+                                {% if medicamento.posologia|intdiv:60 <= 24 %}
+                                <td>Cada {{ medicamento.posologia|intdiv:60 }} horas</td>
+                                {% elif medicamento.posologia|intdiv:60 <= 10080 %}
+                                <td>Cada {{ medicamento.posologia|intdiv:1440 }} días</td>
+                                {% elif medicamento.posologia|intdiv:60 <= 43200 %}
+                                <td>Cada {{ medicamento.posologia|intdiv:10080 }} semanas</td>
+                                {% else %}
+                                <td>Cada {{ medicamento.posologia|intdiv:43200 }} meses</td>
+                                {% endif %}
+                                <td>{{ medicamento.medico_id.apellido }}, {{ medicamento.medico_id.nombre }}</td>
                                 <td>{{ medicamento.fecha_inicio }}</td>
                                 <td>{{ medicamento.fecha_fin }}</td>
                                 <td>{{ medicamento.dosis_completadas }}</td>
                                 <td><input type="button" class="ibtnEdit btn btn-sm btn-info" value="Editar">
-                                    <input type="button" class="ibtnBorrar btn btn-sm btn-danger" value="Borrar"></td>
+                                    <input type="button" class="ibtnBorrar btn btn-sm btn-danger" data-toggle="modal" data-target="#medicamentoModal" value="Borrar"></td>
                             </tr>
                             {% endfor %}
                       </tbody>
                     </table>
 
+                    <!-- Modal Medicamento -->
+                    <div class="modal fade" id="medicamentoModal" tabindex="-1" role="dialog" aria-labelledby="medicamentoModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h6 class="modal-title" id="medicamentoModalLabel">Eliminar Medicamento</h6>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    ¿Está seguro de que desea eliminar el medicamento?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Cerrar</button>
+                                    <button type="button" class="btn btn-sm btn-danger">Eliminar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-                     <h5>Medicaciones Pasadas</h5></br>
+                     <h6>Medicaciones Pasadas</h6></br>
+                     <table class="table table-sm table-secondary table-hover" name="mednovigentes">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">Medicamento</th>
+                                <th scope="col">Posología</th>
+                                <th scope="col">Recetado Por</th>
+                                <th scope="col">Fecha Inicio</th>
+                                <th scope="col">Fecha Fin</th>
+                                <th scope="col">Cantidad de dosis completadas</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for medicamento in object.medicamentos_novigentes %}
+                            <tr>
+                                <th scope="row">{{ medicamento.medicamento }}</th>
+                                {% if medicamento.posologia|intdiv:60 <= 24 %}
+                                <td>Cada {{ medicamento.posologia|intdiv:60 }} horas</td>
+                                {% elif medicamento.posologia|intdiv:60 <= 10080 %}
+                                <td>Cada {{ medicamento.posologia|intdiv:1440 }} días</td>
+                                {% elif medicamento.posologia|intdiv:60 <= 43200 %}
+                                <td>Cada {{ medicamento.posologia|intdiv:10080 }} semanas</td>
+                                {% else %}
+                                <td>Cada {{ medicamento.posologia|intdiv:43200 }} meses</td>
+                                {% endif %}
+                                <td>{{ medicamento.medico.apellido }}, {{ medicamento.medico.nombre }}</td>
+                                <td>{{ medicamento.fecha_inicio }}</td>
+                                <td>{{ medicamento.fecha_fin }}</td>
+                                <td>{{ medicamento.dosis_completadas }}</td>
+                            </tr>
+                            {% endfor %}
+                      </tbody>
+                    </table>
                 </div>
             </div>
         </div>
         <div class="card">
             <div class="card-header" role="tab" id="headingTwo">
-                <h5 class="mb-0">
-                    <a data-toggle="collapse" href="#estudiosyactividades" role="button" aria-expanded="true" aria-controls="estudiosyactividades">
-                        Estudios y Actividades
-                    </a>
-                </h5>
+                <h6 class="mb-0">
+                    <a data-toggle="collapse" href="#estudiosyactividades" role="button" aria-expanded="true" aria-controls="estudiosyactividades">Estudios y Actividades</a>
+                </h6>
             </div>
 
             <div id="estudiosyactividades" class="collapse" role="tabpanel" aria-labelledby="headingTwo" data-parent="#accordion">
@@ -112,11 +193,9 @@
         </div>
         <div class="card">
             <div class="card-header" role="tab" id="headingThree">
-                <h5 class="mb-0">
-                    <a data-toggle="collapse" href="#acciones" role="button" aria-expanded="true" aria-controls="acciones">
-                        Acciones
-                    </a>
-                </h5>
+                <h6 class="mb-0">
+                    <a data-toggle="collapse" href="#acciones" role="button" aria-expanded="true" aria-controls="acciones">Acciones</a>
+                </h6>
             </div>
 
             <div id="acciones" class="collapse" role="tabpanel" aria-labelledby="headingThree" data-parent="#accordion">

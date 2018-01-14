@@ -29,7 +29,14 @@ $(document).ready(function () {
             var cols = "";
 
             cols += '<th scope="row"><input type="text" class="form-control form-control-sm" name="medicamento" form="form_medicamento"/></th>';
-            cols += '<td><input type="text" class="form-control form-control-sm" name="posologia" form="form_medicamento"/></td>';
+            cols += '<td>Cada' +
+                '<input type="text" class="form-control form-control-sm" name="posologia_cantidad" form="form_medicamento" size="1"/>' +
+                '<select class="form-control form-control-sm" name="posologia_unidad" form="form_medicamento">' +
+                '<option value="horas">Horas</option>' +
+                '<option value="dias">Días</option>' +
+                '<option value="semanas">Semanas</option>' +
+                '<option value="meses">Meses</option></select>' +
+                '</td>';
             cols += '<td></td>';
             cols += '<td><input type="text" class="form-control form-control-sm" name="fecha_inicio" form="form_medicamento"/></td>';
             cols += '<td><input type="text" class="form-control form-control-sm" name="fecha_fin" form="form_medicamento"/></td>';
@@ -38,7 +45,7 @@ $(document).ready(function () {
             cols += '<td><input type="submit" class="ibtnSav btn btn-sm btn-success" value="Guardar" form="form_medicamento">';
             cols += '<input type="button" class="ibtnDel btn btn-sm btn-danger" value="Borrar"></td>';
             newRow.append(cols);
-            $("table.table-sm.table-hover").append(newRow);
+            $("table[name^=medvigentes]").append(newRow);
         }
 		$(function() {
 			$("input[name^=fecha_inicio]").datepicker({dateFormat: 'yy-mm-dd', changeMonth: true, changeYear: true});
@@ -46,7 +53,7 @@ $(document).ready(function () {
 		});
     });
 
-    $("table.table-sm.table-hover.medact").on("click", ".ibtnDel", function (event) {
+    $("table[name^=medvigentes]").on("click", ".ibtnDel", function (event) {
         $(this).closest("tr").remove();
         $("#addrow").removeClass('disabled');
     })

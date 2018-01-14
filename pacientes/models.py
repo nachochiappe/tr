@@ -39,7 +39,7 @@ class Medicamento(models.Model):
         on_delete=models.PROTECT,
     )
     medicamento = models.CharField(max_length=50)
-    posologia = models.CharField(max_length=50)
+    posologia = models.PositiveIntegerField()
     medico = models.ForeignKey(
         Medico,
         on_delete=models.PROTECT,
@@ -47,6 +47,9 @@ class Medicamento(models.Model):
     fecha_inicio = models.DateField()
     fecha_fin = models.DateField()
     dosis_completadas = models.PositiveIntegerField()
+
+    def __str__(self):
+        return(str(self.paciente.dni) + "_" + self.medicamento)
 
 
 class Estudio(models.Model):
