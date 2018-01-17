@@ -5,11 +5,13 @@ from django.views.generic import ListView, DetailView, CreateView, FormView
 from django.views.generic.detail import SingleObjectMixin
 from django.contrib.auth.models import User, Group
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponse
 
 import datetime
 
 from .forms import PacienteCreateForm, MedicamentoCreateForm
 from .models import Paciente, Medicamento, Estudio
+from medicos.models import Medico
 
 # Create your views here.
 
@@ -118,3 +120,14 @@ class PacienteCreateView(LoginRequiredMixin, CreateView):
         user.groups.add(grupo)
         user.save()
         return super().form_valid(form)
+
+
+def tomar_medicacion(request):
+    if request.method == 'POST':
+        print(request.POST)
+        id = request.POST['id']
+        medicamento = Medicamento.objects.get(id=id)
+        dosis = medicamento.dosis_completadas + 1
+        medicamento.dosis_completadas = dosis
+        medicamento.save()
+    return HttpResponse(dosis)

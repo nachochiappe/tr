@@ -80,101 +80,111 @@
 
             <div id="medicamentos" class="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
                 <div class="card-body">
-                    <h6>Medicaciones Actuales</h6></br>
-                    <input type="button" class="btn btn-success btn-sm" id="addrow" value="+ Nueva Medicación"></br></br>
+                    <div class="card">
+                        <h6 class="card-header">Medicaciones Actuales</h6>
+                        <div class="card-body">
+                            <input type="button" class="btn btn-success btn-sm" id="addrow" value="+ Nueva Medicación"></br></br>
 
-                    <form method="POST" id="form_medicamento">{% csrf_token %}</form>
+                            <form method="POST" id="form_medicamento">{% csrf_token %}</form>
 
-                    <table class="table table-sm table-hover" name="medvigentes">
-                        <thead class="thead-light">
-                            <tr>
-                                <th scope="col">Medicamento</th>
-                                <th scope="col">Posología</th>
-                                <th scope="col">Recetado Por</th>
-                                <th scope="col">Fecha Inicio</th>
-                                <th scope="col">Fecha Fin</th>
-                                <th scope="col">Cantidad de dosis completadas</th>
-                                <th scope="col">Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for medicamento in object.medicamentos_vigentes %}
-                            <tr>
-                                <th scope="row">{{ medicamento.medicamento }}</th>
-                                {% if medicamento.posologia|intdiv:60 <= 24 %}
-                                <td>Cada {{ medicamento.posologia|intdiv:60 }} horas</td>
-                                {% elif medicamento.posologia|intdiv:60 <= 10080 %}
-                                <td>Cada {{ medicamento.posologia|intdiv:1440 }} días</td>
-                                {% elif medicamento.posologia|intdiv:60 <= 43200 %}
-                                <td>Cada {{ medicamento.posologia|intdiv:10080 }} semanas</td>
-                                {% else %}
-                                <td>Cada {{ medicamento.posologia|intdiv:43200 }} meses</td>
-                                {% endif %}
-                                <td>{{ medicamento.medico_id.apellido }}, {{ medicamento.medico_id.nombre }}</td>
-                                <td>{{ medicamento.fecha_inicio }}</td>
-                                <td>{{ medicamento.fecha_fin }}</td>
-                                <td>{{ medicamento.dosis_completadas }}</td>
-                                <td><input type="button" class="ibtnEdit btn btn-sm btn-info" value="Editar">
-                                    <input type="button" class="ibtnBorrar btn btn-sm btn-danger" data-toggle="modal" data-target="#medicamentoModal" value="Borrar"></td>
-                            </tr>
-                            {% endfor %}
-                      </tbody>
-                    </table>
+                            <table class="table table-sm table-hover table-condensed" name="medvigentes">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th scope="col">Medicamento</th>
+                                        <th scope="col">Posología</th>
+                                        <th scope="col">Recetado Por</th>
+                                        <th scope="col">Fecha Inicio</th>
+                                        <th scope="col">Fecha Fin</th>
+                                        <th scope="col">Cantidad de dosis completadas</th>
+                                        <th scope="col">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for medicamento in object.medicamentos_vigentes %}
+                                    <tr>
+                                        <th scope="row">{{ medicamento.medicamento }}</th>
+                                        {% if medicamento.posologia|intdiv:60 <= 24 %}
+                                        <td>Cada {{ medicamento.posologia|intdiv:60 }} horas</td>
+                                        {% elif medicamento.posologia|intdiv:60 <= 10080 %}
+                                        <td>Cada {{ medicamento.posologia|intdiv:1440 }} días</td>
+                                        {% elif medicamento.posologia|intdiv:60 <= 43200 %}
+                                        <td>Cada {{ medicamento.posologia|intdiv:10080 }} semanas</td>
+                                        {% else %}
+                                        <td>Cada {{ medicamento.posologia|intdiv:43200 }} meses</td>
+                                        {% endif %}
+                                        <td>{{ medicamento.medico_id }}</td>
+                                        <td>{{ medicamento.fecha_inicio }}</td>
+                                        <td>{{ medicamento.fecha_fin }}</td>
+                                        <td id="dosis-completadas">{{ medicamento.dosis_completadas }}</td>
+                                        <td><input type="hidden" class="medicamentoid" value="{{medicamento.id}}">
+                                            <input type="button" class="ibtnTomar btn btn-sm btn-success" id="tomar-medicacion" value="Tomar Medicación">
+                                            <input type="button" class="ibtnEdit btn btn-sm btn-info" value="Editar">
+                                            <input type="button" class="ibtnBorrar btn btn-sm btn-danger" data-toggle="modal" data-target="#medicamentoModal" value="Borrar"></td>
+                                    </tr>
+                                    {% endfor %}
+                              </tbody>
+                            </table>
 
-                    <!-- Modal Medicamento -->
-                    <div class="modal fade" id="medicamentoModal" tabindex="-1" role="dialog" aria-labelledby="medicamentoModalLabel" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h6 class="modal-title" id="medicamentoModalLabel">Eliminar Medicamento</h6>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    ¿Está seguro de que desea eliminar el medicamento?
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Cerrar</button>
-                                    <button type="button" class="btn btn-sm btn-danger">Eliminar</button>
+                            <!-- Modal Medicamento -->
+                            <div class="modal fade" id="medicamentoModal" tabindex="-1" role="dialog" aria-labelledby="medicamentoModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h6 class="modal-title" id="medicamentoModalLabel">Eliminar Medicamento</h6>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            ¿Está seguro de que desea eliminar el medicamento?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Cerrar</button>
+                                            <button type="button" class="btn btn-sm btn-danger">Eliminar</button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                     <h6>Medicaciones Pasadas</h6></br>
-                     <table class="table table-sm table-secondary table-hover" name="mednovigentes">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th scope="col">Medicamento</th>
-                                <th scope="col">Posología</th>
-                                <th scope="col">Recetado Por</th>
-                                <th scope="col">Fecha Inicio</th>
-                                <th scope="col">Fecha Fin</th>
-                                <th scope="col">Cantidad de dosis completadas</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for medicamento in object.medicamentos_novigentes %}
-                            <tr>
-                                <th scope="row">{{ medicamento.medicamento }}</th>
-                                {% if medicamento.posologia|intdiv:60 <= 24 %}
-                                <td>Cada {{ medicamento.posologia|intdiv:60 }} horas</td>
-                                {% elif medicamento.posologia|intdiv:60 <= 10080 %}
-                                <td>Cada {{ medicamento.posologia|intdiv:1440 }} días</td>
-                                {% elif medicamento.posologia|intdiv:60 <= 43200 %}
-                                <td>Cada {{ medicamento.posologia|intdiv:10080 }} semanas</td>
-                                {% else %}
-                                <td>Cada {{ medicamento.posologia|intdiv:43200 }} meses</td>
-                                {% endif %}
-                                <td>{{ medicamento.medico.apellido }}, {{ medicamento.medico.nombre }}</td>
-                                <td>{{ medicamento.fecha_inicio }}</td>
-                                <td>{{ medicamento.fecha_fin }}</td>
-                                <td>{{ medicamento.dosis_completadas }}</td>
-                            </tr>
-                            {% endfor %}
-                      </tbody>
-                    </table>
+                    <div class="card" style="margin-top: 15px;">
+                        <h6 class="card-header">Medicaciones Pasadas</h6>
+                        <div class="card-body">
+                             <table class="table table-sm table-secondary table-hover table-condensed" name="mednovigentes">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th scope="col">Medicamento</th>
+                                        <th scope="col">Posología</th>
+                                        <th scope="col">Recetado Por</th>
+                                        <th scope="col">Fecha Inicio</th>
+                                        <th scope="col">Fecha Fin</th>
+                                        <th scope="col">Cantidad de dosis completadas</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for medicamento in object.medicamentos_novigentes %}
+                                    <tr>
+                                        <th scope="row">{{ medicamento.medicamento }}</th>
+                                        {% if medicamento.posologia|intdiv:60 <= 24 %}
+                                        <td>Cada {{ medicamento.posologia|intdiv:60 }} horas</td>
+                                        {% elif medicamento.posologia|intdiv:60 <= 10080 %}
+                                        <td>Cada {{ medicamento.posologia|intdiv:1440 }} días</td>
+                                        {% elif medicamento.posologia|intdiv:60 <= 43200 %}
+                                        <td>Cada {{ medicamento.posologia|intdiv:10080 }} semanas</td>
+                                        {% else %}
+                                        <td>Cada {{ medicamento.posologia|intdiv:43200 }} meses</td>
+                                        {% endif %}
+                                        <td>{{ medicamento.medico.apellido }}, {{ medicamento.medico.nombre }}</td>
+                                        <td>{{ medicamento.fecha_inicio }}</td>
+                                        <td>{{ medicamento.fecha_fin }}</td>
+                                        <td>{{ medicamento.dosis_completadas }}</td>
+                                    </tr>
+                                    {% endfor %}
+                              </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -185,9 +195,83 @@
                 </h6>
             </div>
 
-            <div id="estudiosyactividades" class="collapse" role="tabpanel" aria-labelledby="headingTwo" data-parent="#accordion">
+            <div id="estudiosyactividades" class="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
                 <div class="card-body">
-                    <button type="button" class="btn btn-success btn-sm">+ Nuevo Estudio o Actividad</button>
+                    <div class="card">
+                        <h6 class="card-header">Estudios/Actividades Pendientes</h6>
+                        <div class="card-body">
+                            <input type="button" class="btn btn-success btn-sm" id="addrow" value="+ Nuevo Estudio o Actividad"></br></br>
+
+                            <form method="POST" id="form_estudios">{% csrf_token %}</form>
+
+                            <table class="table table-sm table-hover table-condensed" name="estvigentes">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th scope="col">Estudio/Actividad Solicitado</th>
+                                        <th scope="col">Solicitado Por</th>
+                                        <th scope="col">Fecha de Solicitud</th>
+                                        <th scope="col">Estado</th>
+                                        <th scope="col">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th scope="row"></th>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td><input type="button" class="ibtnEdit btn btn-sm btn-info" value="Editar">
+                                            <input type="button" class="ibtnBorrar btn btn-sm btn-danger" data-toggle="modal" data-target="#estudioModal" value="Borrar"></td>
+                                    </tr>
+                              </tbody>
+                            </table>
+
+                            <!-- Modal Estudio -->
+                            <div class="modal fade" id="estudioModal" tabindex="-1" role="dialog" aria-labelledby="estudioModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h6 class="modal-title" id="estudioModalLabel">Eliminar Estudio/Actividad</h6>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            ¿Está seguro de que desea eliminar el estudio/actividad?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Cerrar</button>
+                                            <button type="button" class="btn btn-sm btn-danger">Eliminar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card" style="margin-top: 15px;">
+                        <h6 class="card-header">Estudios/Actividades Pasados</h6>
+                        <div class="card-body">
+                             <table class="table table-sm table-hover table-condensed" name="estnovigentes">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th scope="col">Estudio/Actividad Solicitado</th>
+                                        <th scope="col">Solicitado Por</th>
+                                        <th scope="col">Fecha de Solicitud</th>
+                                        <th scope="col">Estado</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th scope="row"></th>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                              </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
