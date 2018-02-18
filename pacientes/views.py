@@ -45,7 +45,12 @@ class PacienteDisplay(DetailView):
         medicamentos_vigentes = medicamentos_vigentes.filter(fecha_fin__gte=datetime.date.today())
         medicamentos_novigentes = Medicamento.objects.filter(paciente=paciente).values()
         medicamentos_novigentes = medicamentos_novigentes.filter(fecha_fin__lt=datetime.date.today())
-        obj = {'paciente': paciente, 'medicamentos_vigentes': medicamentos_vigentes, 'medicamentos_novigentes': medicamentos_novigentes}
+        estudios_vigentes = Estudio.objects.filter(paciente=paciente).values()
+        estudios_vigentes = estudios_vigentes.filter(fecha_completado__isnull=True)
+        estudios_novigentes = Estudio.objects.filter(paciente=paciente).values()
+        estudios_novigentes = estudios_novigentes.filter(fecha_completado__isnull=False)
+        obj = {'paciente': paciente, 'medicamentos_vigentes': medicamentos_vigentes, 'medicamentos_novigentes': medicamentos_novigentes,
+        'estudios_vigentes': estudios_vigentes, 'estudios_novigentes': estudios_novigentes}
         return obj
 
 
@@ -60,6 +65,12 @@ class PacienteMedicamentoEstudio(SingleObjectMixin, FormView):
         medicamentos_vigentes = medicamentos_vigentes.filter(fecha_fin__gte=datetime.date.today())
         medicamentos_novigentes = Medicamento.objects.filter(paciente=paciente).values()
         medicamentos_novigentes = medicamentos_novigentes.filter(fecha_fin__lt=datetime.date.today())
+        # estudios_vigentes = Estudio.objects.filter(paciente=paciente).values()
+        # estudios_vigentes = estudios_vigentes.filter(fecha_completado__isnull=True)
+        # estudios_vigentes = Estudio.objects.filter(paciente=paciente).values()
+        # estudios_vigentes = estudios_novigentes.filter(fecha_completado__isnull=False)
+        # obj = {'paciente': paciente, 'medicamentos_vigentes': medicamentos_vigentes, 'medicamentos_novigentes': medicamentos_novigentes,
+        # 'estudios_vigentes': estudios_vigentes, 'estudios_novigentes': estudios_novigentes}
         obj = {'paciente': paciente, 'medicamentos_vigentes': medicamentos_vigentes, 'medicamentos_novigentes': medicamentos_novigentes}
         return obj
 
@@ -124,10 +135,15 @@ class PacienteCreateView(LoginRequiredMixin, CreateView):
 
 def tomar_medicacion(request):
     if request.method == 'POST':
-        print(request.POST)
         id = request.POST['id']
         medicamento = Medicamento.objects.get(id=id)
         dosis = medicamento.dosis_completadas + 1
         medicamento.dosis_completadas = dosis
         medicamento.save()
     return HttpResponse(dosis)
+
+def borrar_medicamento(request):
+    if request.method == 'POST':
+        id = request.POST['id']
+        Medicamento.objects.filter(id=id).delete()
+    return HttpResponse()

@@ -83,7 +83,7 @@
                     <div class="card">
                         <h6 class="card-header">Medicaciones Actuales</h6>
                         <div class="card-body">
-                            <input type="button" class="btn btn-success btn-sm" id="addrow" value="+ Nueva Medicación"></br></br>
+                            <input type="button" class="btn btn-success btn-sm" id="nuevafilamed" value="+ Nueva Medicación"></br></br>
 
                             <form method="POST" id="form_medicamento">{% csrf_token %}</form>
 
@@ -115,11 +115,10 @@
                                         <td>{{ medicamento.medico_id }}</td>
                                         <td>{{ medicamento.fecha_inicio }}</td>
                                         <td>{{ medicamento.fecha_fin }}</td>
-                                        <td id="dosis-completadas">{{ medicamento.dosis_completadas }}</td>
-                                        <td><input type="hidden" class="medicamentoid" value="{{medicamento.id}}">
-                                            <input type="button" class="ibtnTomar btn btn-sm btn-success" id="tomar-medicacion" value="Tomar Medicación">
-                                            <input type="button" class="ibtnEdit btn btn-sm btn-info" value="Editar">
-                                            <input type="button" class="ibtnBorrar btn btn-sm btn-danger" data-toggle="modal" data-target="#medicamentoModal" value="Borrar"></td>
+                                        <td id="dosis-completadas-{{medicamento.id}}">{{ medicamento.dosis_completadas }}</td>
+                                        <td><input type="button" class="ibtnTomar btn btn-sm btn-success" id="tomar-{{medicamento.id}}" value="Tomar Medicación">
+                                            <input type="button" class="ibtnEdit btn btn-sm btn-info" id="editar-{{medicamento.id}}" value="Editar">
+                                            <input type="button" class="ibtnBorrar btn btn-sm btn-danger" id="borrar-{{medicamento.id}}" data-toggle="modal" data-target="#medicamentoModal" value="Borrar"></td>
                                     </tr>
                                     {% endfor %}
                               </tbody>
@@ -140,7 +139,7 @@
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Cerrar</button>
-                                            <button type="button" class="btn btn-sm btn-danger">Eliminar</button>
+                                            <button type="button" class="btn btn-sm btn-danger btn-confirmar">Eliminar</button>
                                         </div>
                                     </div>
                                 </div>
@@ -151,7 +150,7 @@
                     <div class="card" style="margin-top: 15px;">
                         <h6 class="card-header">Medicaciones Pasadas</h6>
                         <div class="card-body">
-                             <table class="table table-sm table-secondary table-hover table-condensed" name="mednovigentes">
+                             <table class="table table-sm table-secondary table-hover table-condensed" id="mednovigentes">
                                 <thead class="thead-dark">
                                     <tr>
                                         <th scope="col">Medicamento</th>
@@ -200,7 +199,7 @@
                     <div class="card">
                         <h6 class="card-header">Estudios/Actividades Pendientes</h6>
                         <div class="card-body">
-                            <input type="button" class="btn btn-success btn-sm" id="addrow" value="+ Nuevo Estudio o Actividad"></br></br>
+                            <input type="button" class="btn btn-success btn-sm" id="nuevafilamed" value="+ Nuevo Estudio o Actividad"></br></br>
 
                             <form method="POST" id="form_estudios">{% csrf_token %}</form>
 
@@ -215,14 +214,17 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    {% for estudio in object.estudios_vigentes %}
                                     <tr>
-                                        <th scope="row"></th>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td><input type="button" class="ibtnEdit btn btn-sm btn-info" value="Editar">
+                                        <th scope="row">{{ estudio.estudio }}</th>
+                                        <td>{{ estudio.medico_id }}</td>
+                                        <td>{{ estudio.fecha_solicitud }}</td>
+                                        <td>Pendiente</td>
+                                        <td><input type="button" class="ibtnCompletar btn btn-sm btn-success" value="Completar Estudio">
+                                            <input type="button" class="ibtnEdit btn btn-sm btn-info" value="Editar">
                                             <input type="button" class="ibtnBorrar btn btn-sm btn-danger" data-toggle="modal" data-target="#estudioModal" value="Borrar"></td>
                                     </tr>
+                                    {% endfor %}
                               </tbody>
                             </table>
 
@@ -252,22 +254,26 @@
                     <div class="card" style="margin-top: 15px;">
                         <h6 class="card-header">Estudios/Actividades Pasados</h6>
                         <div class="card-body">
-                             <table class="table table-sm table-hover table-condensed" name="estnovigentes">
+                             <table class="table table-sm table-secondary table-hover table-condensed" name="estnovigentes">
                                 <thead class="thead-dark">
                                     <tr>
                                         <th scope="col">Estudio/Actividad Solicitado</th>
                                         <th scope="col">Solicitado Por</th>
                                         <th scope="col">Fecha de Solicitud</th>
+                                        <th scope="col">Fecha Completado</th>
                                         <th scope="col">Estado</th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    {% for estudio in object.estudios_novigentes %}
                                     <tr>
-                                        <th scope="row"></th>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
+                                        <th scope="row">{{ estudio.estudio }}</th>
+                                        <td>{{ estudio.medico_id }}</td>
+                                        <td>{{ estudio.fecha_solicitud }}</td>
+                                        <td>{{ estudio.fecha_completado }}</td>
+                                        <td>Completado</td>
                                     </tr>
+                                    {% endfor %}
                               </tbody>
                             </table>
                         </div>

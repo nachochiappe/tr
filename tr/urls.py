@@ -26,6 +26,7 @@ urlpatterns = [
     url(r'^$', PacienteListView.as_view(), name='home'),
     url(r'^pacientes/$', PacienteListView.as_view(), name='pacientes'),
     url(r'^ajax/tomar_medicacion/$', tomar_medicacion, name='tomar-medicacion'),
+    url(r'^ajax/borrar_medicamento/$', borrar_medicamento, name='borrar-medicamento'),
     url(r'^pacientes/crear/$', PacienteCreateView.as_view(), name='paciente-crear'),
     url(r'^pacientes/(?P<id>\w+)/$', PacienteDetailView.as_view(), name='paciente-detalle'),
     url(r'^medicos/$', MedicoListView.as_view(), name='medicos'),

@@ -18,12 +18,12 @@ $.datepicker.regional['es'] = {
 $.datepicker.setDefaults($.datepicker.regional['es']);
 
 $(document).ready(function () {
-    $("#addrow").on("click", function () {
-        if($("#addrow").hasClass('disabled')) {
+    $("#nuevafilamed").on("click", function () {
+        if($("#nuevafilamed").hasClass('disabled')) {
             return;
         }
         else {
-            $("#addrow").addClass('disabled');
+            $("#nuevafilamed").addClass('disabled');
 
             var newRow = $("<tr>");
             var cols = "";
@@ -43,7 +43,7 @@ $(document).ready(function () {
             cols += '<td></td>';
 
             cols += '<td><input type="submit" class="ibtnSav btn btn-sm btn-success" value="Guardar" form="form_medicamento">';
-            cols += '<input type="button" class="ibtnDel btn btn-sm btn-danger" value="Borrar"></td>';
+            cols += '<input type="button" class="ibtnDel btn btn-sm btn-danger" value="Cancelar"></td>';
             newRow.append(cols);
             $("table[name^=medvigentes]").append(newRow);
         }
@@ -55,11 +55,11 @@ $(document).ready(function () {
 
     $("table[name^=medvigentes]").on("click", ".ibtnDel", function (event) {
         $(this).closest("tr").remove();
-        $("#addrow").removeClass('disabled');
+        $("#nuevafilamed").removeClass('disabled');
     })
         .on("click", ".ibtnSav", function (event) {
 
-        $("#addrow").removeClass('disabled');
+        $("#nuevafilamed").removeClass('disabled');
     });
 	
 });

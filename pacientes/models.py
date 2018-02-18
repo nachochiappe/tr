@@ -63,8 +63,10 @@ class Estudio(models.Model):
         on_delete=models.PROTECT,
     )
     fecha_solicitud = models.DateField()
-    fecha_completado = models.DateField()
-    estado = models.CharField(max_length=20)
+    fecha_completado = models.DateField(null=True, blank=True)
+
+    def __str__(self):
+        return(str(self.paciente.dni) + "_" + self.estudio)
 
 
 @receiver(pre_save, sender=Paciente)
