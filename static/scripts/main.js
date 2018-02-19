@@ -32,11 +32,11 @@ function tomar_medicacion(id) {
 
 // FUNCIONES DE BORRAR MEDICAMENTO
 
-$(document).on('click','.ibtnBorrar', function(){
+$(document).off('click', '.ibtnBorrar').on('click', '.ibtnBorrar', function() {
 	var itemactual = $(this);
 	var str = event.target.id;
 	var id = parseInt(str.replace('borrar-', ''));
-	$(document).on('click','.btn-confirmar', function(){
+	$(document).off('click', '.btn-confirmar').on('click','.btn-confirmar', function() {
 		$("#medicamentoModal").modal('hide');
 		borrar_medicamento(itemactual, id);
 	});
