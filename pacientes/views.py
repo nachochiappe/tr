@@ -65,13 +65,12 @@ class PacienteMedicamentoEstudio(SingleObjectMixin, FormView):
         medicamentos_vigentes = medicamentos_vigentes.filter(fecha_fin__gte=datetime.date.today())
         medicamentos_novigentes = Medicamento.objects.filter(paciente=paciente).values()
         medicamentos_novigentes = medicamentos_novigentes.filter(fecha_fin__lt=datetime.date.today())
-        # estudios_vigentes = Estudio.objects.filter(paciente=paciente).values()
-        # estudios_vigentes = estudios_vigentes.filter(fecha_completado__isnull=True)
-        # estudios_vigentes = Estudio.objects.filter(paciente=paciente).values()
-        # estudios_vigentes = estudios_novigentes.filter(fecha_completado__isnull=False)
-        # obj = {'paciente': paciente, 'medicamentos_vigentes': medicamentos_vigentes, 'medicamentos_novigentes': medicamentos_novigentes,
-        # 'estudios_vigentes': estudios_vigentes, 'estudios_novigentes': estudios_novigentes}
-        obj = {'paciente': paciente, 'medicamentos_vigentes': medicamentos_vigentes, 'medicamentos_novigentes': medicamentos_novigentes}
+        estudios_vigentes = Estudio.objects.filter(paciente=paciente).values()
+        estudios_vigentes = estudios_vigentes.filter(fecha_completado__isnull=True)
+        estudios_novigentes = Estudio.objects.filter(paciente=paciente).values()
+        estudios_novigentes = estudios_novigentes.filter(fecha_completado__isnull=False)
+        obj = {'paciente': paciente, 'medicamentos_vigentes': medicamentos_vigentes, 'medicamentos_novigentes': medicamentos_novigentes,
+        'estudios_vigentes': estudios_vigentes, 'estudios_novigentes': estudios_novigentes}
         return obj
 
     def form_valid(self, form):
