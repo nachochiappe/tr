@@ -19,7 +19,7 @@
                                 <td>{{ object.paciente.apellido }}</td>
                             </tr>
                             <tr>
-                                <td>DNI</td>
+                                <td>Documento</td>
                                 <td>{{ object.paciente.dni }}</td>
                             </tr>
                             <tr>
@@ -31,7 +31,7 @@
                                 <td>{{ object.paciente.pais.name }}</td>
                             </tr>
                             <tr>
-                                <td>Mail</td>
+                                <td>E-Mail</td>
                                 <td>{{ object.paciente.mail }}</td>
                             </tr>
                         </tbody>
@@ -199,11 +199,11 @@
                     <div class="card">
                         <h6 class="card-header">Estudios/Actividades Pendientes</h6>
                         <div class="card-body">
-                            <input type="button" class="btn btn-success btn-sm" id="nuevafilamed" value="+ Nuevo Estudio o Actividad"></br></br>
+                            <input type="button" class="btn btn-success btn-sm" id="nuevafilaest" value="+ Nuevo Estudio o Actividad"></br></br>
 
-                            <form method="POST" id="form_estudios">{% csrf_token %}</form>
+                            <form method="POST" id="form_estudio">{% csrf_token %}</form>
 
-                            <table class="table table-sm table-hover table-condensed" name="estvigentes">
+                            <table class="table table-sm table-hover table-condensed" id="estvigentes">
                                 <thead class="thead-light">
                                     <tr>
                                         <th scope="col">Estudio/Actividad Solicitado</th>
@@ -254,7 +254,7 @@
                     <div class="card" style="margin-top: 15px;">
                         <h6 class="card-header">Estudios/Actividades Pasados</h6>
                         <div class="card-body">
-                             <table class="table table-sm table-secondary table-hover table-condensed" name="estnovigentes">
+                             <table class="table table-sm table-secondary table-hover table-condensed" id="estnovigentes">
                                 <thead class="thead-dark">
                                     <tr>
                                         <th scope="col">Estudio/Actividad Solicitado</th>

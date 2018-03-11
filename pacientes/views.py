@@ -9,7 +9,7 @@ from django.http import HttpResponse
 
 import datetime
 
-from .forms import PacienteCreateForm, MedicamentoCreateForm
+from .forms import PacienteCreateForm, MedicamentoCreateForm, EstudioCreateForm
 from .models import Paciente, Medicamento, Estudio
 from medicos.models import Medico
 
@@ -75,35 +75,51 @@ class PacienteMedicamentoEstudio(SingleObjectMixin, FormView):
         return obj
 
     def form_valid(self, form):
-        medicamento = Medicamento()
-        medicamento.paciente = self.object['paciente']
-        medicamento.medicamento = form.cleaned_data['medicamento']
-        if form.cleaned_data['posologia_unidad'] == "horas":
-            medicamento.posologia = form.cleaned_data['posologia_cantidad'] * 60
-        elif form.cleaned_data['posologia_unidad'] == "dias":
-            medicamento.posologia = form.cleaned_data['posologia_cantidad'] * 60 * 24
-        elif form.cleaned_data['posologia_unidad'] == "semanas":
-            medicamento.posologia = form.cleaned_data['posologia_cantidad'] * 60 * 24 * 7
-        else:
-            medicamento.posologia = form.cleaned_data['posologia_cantidad'] * 60 * 24 * 30
-        medicamento.medico = medicamento.paciente.medico
-        medicamento.fecha_inicio = form.cleaned_data['fecha_inicio']
-        medicamento.fecha_fin = form.cleaned_data['fecha_fin']
-        medicamento.dosis_completadas = 0
-        medicamento.save()
-        return self.render_to_response(self.get_context_data(form=form))
+        if 'medicamento' in form.cleaned_data:
+            medicamento = Medicamento()
+            medicamento.paciente = self.object['paciente']
+            medicamento.medicamento = form.cleaned_data['medicamento']
+            if form.cleaned_data['posologia_unidad'] == "horas":
+                medicamento.posologia = form.cleaned_data['posologia_cantidad'] * 60
+            elif form.cleaned_data['posologia_unidad'] == "dias":
+                medicamento.posologia = form.cleaned_data['posologia_cantidad'] * 60 * 24
+            elif form.cleaned_data['posologia_unidad'] == "semanas":
+                medicamento.posologia = form.cleaned_data['posologia_cantidad'] * 60 * 24 * 7
+            else:
+                medicamento.posologia = form.cleaned_data['posologia_cantidad'] * 60 * 24 * 30
+            medicamento.medico = medicamento.paciente.medico
+            medicamento.fecha_inicio = form.cleaned_data['fecha_inicio']
+            medicamento.fecha_fin = form.cleaned_data['fecha_fin']
+            medicamento.dosis_completadas = 0
+            medicamento.save()
+            return self.render_to_response(self.get_context_data(form=form))
+        elif 'estudio' in form.cleaned_data:
+            estudio = Estudio()
+            estudio.paciente = self.object['paciente']
+            estudio.estudio = form.cleaned_data['estudio']
+            estudio.medico = estudio.paciente.medico
+            estudio.fecha_solicitud = datetime.date.today()
+            estudio.save()
+            return self.render_to_response(self.get_context_data(form=form))
+
         # return super().form_valid(form)
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
-        form = MedicamentoCreateForm(request.POST)
-        if form.is_valid():
-            return self.form_valid(form)
+        if 'guardarmed' in request.POST:
+            medform = MedicamentoCreateForm(request.POST)
+            if medform.is_valid():
+                return self.form_valid(medform)
+            else:
+                return self.form_invalid(medform)
+        elif 'guardarest' in request.POST:
+            estform = EstudioCreateForm(request.POST)
+            if estform.is_valid():
+                return self.form_valid(estform)
+            else:
+                return self.form_invalid(estform)
         else:
-            print(request.POST)
-            print(form.errors)
-            print(form.cleaned_data)
-            return self.form_invalid(form)
+            print("error")
         # return super().post(request, *args, **kwargs)
 
 

@@ -1,7 +1,7 @@
 from django import forms
 from django_countries.fields import CountryField
 
-from .models import Paciente, Medicamento
+from .models import Paciente, Medicamento, Estudio
 
 import datetime
 
@@ -44,4 +44,12 @@ class MedicamentoCreateForm(forms.ModelForm):
             'medicamento',
             'fecha_inicio',
             'fecha_fin',
+        ]
+
+class EstudioCreateForm(forms.ModelForm):
+
+    class Meta:
+        model = Estudio
+        fields = [
+            'estudio',
         ]

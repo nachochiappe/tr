@@ -18,6 +18,9 @@ $.datepicker.regional['es'] = {
 $.datepicker.setDefaults($.datepicker.regional['es']);
 
 $(document).ready(function () {
+
+    // NUEVA FILA DE MEDICAMENTO
+
     $("#nuevafilamed").on("click", function () {
         if($("#nuevafilamed").hasClass('disabled')) {
             return;
@@ -42,8 +45,9 @@ $(document).ready(function () {
             cols += '<td><input type="text" class="form-control form-control-sm" name="fecha_fin" form="form_medicamento"/></td>';
             cols += '<td></td>';
 
-            cols += '<td><input type="submit" class="ibtnSav btn btn-sm btn-success" value="Guardar" form="form_medicamento">';
+            cols += '<td><input type="submit" class="ibtnSav btn btn-sm btn-success" value="Guardar" name="guardarmed" form="form_medicamento">';
             cols += '<input type="button" class="ibtnDel btn btn-sm btn-danger" value="Cancelar"></td>';
+            cols += '</tr>'
             newRow.append(cols);
             $("table[name^=medvigentes]").append(newRow);
         }
@@ -58,9 +62,39 @@ $(document).ready(function () {
         $("#nuevafilamed").removeClass('disabled');
     })
         .on("click", ".ibtnSav", function (event) {
-
-        $("#nuevafilamed").removeClass('disabled');
+            $("#nuevafilamed").removeClass('disabled');
     });
-	
+
+    // NUEVA FILA DE ESTUDIO
+
+    $("#nuevafilaest").on("click", function () {
+        if($("#nuevafilaest").hasClass('disabled')) {
+            return;
+        }
+        else {
+            $("#nuevafilaest").addClass('disabled');
+
+            var newRow = $("<tr>");
+            var cols = "";
+
+            cols += '<th scope="row"><input type="text" class="form-control form-control-sm" name="estudio" form="form_estudio"/></th>';
+            cols += '<td></td>';
+            cols += '<td></td>';
+            cols += '<td></td>';
+            cols += '<td><input type="submit" class="ibtnSav btn btn-sm btn-success" value="Guardar" name="guardarest" form="form_estudio">';
+            cols += '<input type="button" class="ibtnDel btn btn-sm btn-danger" value="Cancelar"></td>';
+            cols += '</tr>'
+            newRow.append(cols);
+            $("#estvigentes").append(newRow);
+        }
+    });
+
+    $("#estvigentes").on("click", ".ibtnDel", function (event) {
+        $(this).closest("tr").remove();
+        $("#nuevafilaest").removeClass('disabled');
+    })
+        .on("click", ".ibtnSav", function (event) {
+            $("#nuevafilaest").removeClass('disabled');
+    });
 });
 
