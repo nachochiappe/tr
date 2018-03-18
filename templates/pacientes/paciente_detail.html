@@ -102,7 +102,11 @@
                                 </thead>
                                 <tbody>
                                     {% for medicamento in object.medicamentos_vigentes %}
+                                    {% if medicamento.medicamento in object.medicamentos_sin_tomar %}
+                                    <tr class="table-danger">
+                                    {% else %}
                                     <tr>
+                                    {% endif %}
                                         <th scope="row">{{ medicamento.medicamento }}</th>
                                         {% if medicamento.posologia|intdiv:60 <= 24 %}
                                         <td>Cada {{ medicamento.posologia|intdiv:60 }} horas</td>

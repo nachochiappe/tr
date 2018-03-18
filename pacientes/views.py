@@ -39,6 +39,18 @@ def obtener_obj(self, *args, **kwargs):
     paciente = get_object_or_404(Paciente, id=paciente_id)
     medicamentos_vigentes = Medicamento.objects.filter(paciente=paciente).values()
     medicamentos_vigentes = medicamentos_vigentes.filter(fecha_fin__gte=datetime.date.today())
+    fecha_hoy = datetime.date.today()
+    medicamentos_sin_tomar = []
+    for medicamento in medicamentos_vigentes:
+        dif_dias = fecha_hoy - medicamento['fecha_inicio']
+        dif_dias_en_minutos = dif_dias.days * 24 * 60
+        dosis_a_tomar = dif_dias_en_minutos / medicamento['posologia']
+        print(medicamento['medicamento'])
+        print(dosis_a_tomar)
+        print(medicamento['dosis_completadas'])
+        if medicamento['dosis_completadas'] < dosis_a_tomar:
+            medicamentos_sin_tomar.append(medicamento['medicamento'])
+    print(medicamentos_sin_tomar)
     medicamentos_novigentes = Medicamento.objects.filter(paciente=paciente).values()
     medicamentos_novigentes = medicamentos_novigentes.filter(fecha_fin__lt=datetime.date.today())
     estudios_vigentes = Estudio.objects.filter(paciente=paciente).values()
@@ -46,7 +58,7 @@ def obtener_obj(self, *args, **kwargs):
     estudios_novigentes = Estudio.objects.filter(paciente=paciente).values()
     estudios_novigentes = estudios_novigentes.filter(fecha_completado__isnull=False)
     obj = {'paciente': paciente, 'medicamentos_vigentes': medicamentos_vigentes, 'medicamentos_novigentes': medicamentos_novigentes,
-    'estudios_vigentes': estudios_vigentes, 'estudios_novigentes': estudios_novigentes}
+    'estudios_vigentes': estudios_vigentes, 'estudios_novigentes': estudios_novigentes, 'medicamentos_sin_tomar': medicamentos_sin_tomar}
     return obj
 
 
