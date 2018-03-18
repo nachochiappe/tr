@@ -5,13 +5,14 @@ from django.views.generic import ListView, DetailView, CreateView, FormView
 from django.views.generic.detail import SingleObjectMixin
 from django.contrib.auth.models import User, Group
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
+from django.forms.models import model_to_dict
 
 import datetime
 
 from .forms import PacienteCreateForm, MedicamentoCreateForm, EstudioCreateForm
 from .models import Paciente, Medicamento, Estudio
-from medicos.models import Medico
+from medicos.models import Medico, Especialidad
 
 # Create your views here.
 
@@ -157,8 +158,26 @@ def tomar_medicacion(request):
         medicamento.save()
     return HttpResponse(dosis)
 
+
 def borrar_medicamento(request):
     if request.method == 'POST':
         id = request.POST['id']
         Medicamento.objects.filter(id=id).delete()
     return HttpResponse()
+
+
+def borrar_estudio(request):
+    if request.method == 'POST':
+        id = request.POST['id']
+        Estudio.objects.filter(id=id).delete()
+    return HttpResponse()
+
+
+def obtener_especialidades(request):
+    especialidades = Especialidad.objects.all().values()
+    return JsonResponse({"especialidades": list(especialidades)})
+
+
+def obtener_medicos(request, id):
+    medicos = Medico.objects.filter(especialidad=id).values()
+    return JsonResponse({"medicos": list(medicos)})

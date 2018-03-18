@@ -291,9 +291,41 @@
             <div id="acciones" class="collapse" role="tabpanel" aria-labelledby="headingThree" data-parent="#accordion">
                 <div class="card-body">
                     <div class="list-group">
-                        <a class="list-group-item list-group-item-action">Derivar paciente</a>
+                        <a href="#" class="list-group-item list-group-item-action derivar-paciente" data-toggle="modal" data-target="#derivarPacienteModal">Derivar paciente</a>
                         <a class="list-group-item list-group-item-action">Enviar correo electrónico al paciente</a>
                         <a class="list-group-item list-group-item-action">Enviar mensaje (dentro de TR)</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Derivar Paciente -->
+        <div class="modal fade" id="derivarPacienteModal" tabindex="-1" role="dialog" aria-labelledby="derivarPacienteModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h6 class="modal-title" id="derivarPacienteModalLabel">Derivar Paciente</h6>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="POST" id="derivar_paciente">
+                            <div class="form-group">
+                                <label for="FormControlSelectEspecialidad">Especialidad</label>
+                                    <select class="form-control-sm" id="FormControlSelectEspecialidad">
+                                    </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="FormControlSelectMedico">Médico</label>
+                                    <select class="form-control-sm" id="FormControlSelectMedico">
+                                    </select>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-sm btn-info">Derivar</button>
                     </div>
                 </div>
             </div>
