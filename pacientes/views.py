@@ -181,3 +181,11 @@ def obtener_especialidades(request):
 def obtener_medicos(request, id):
     medicos = Medico.objects.filter(especialidad=id).values()
     return JsonResponse({"medicos": list(medicos)})
+
+
+def derivar_paciente(request):
+    if request.method == 'POST':
+        id_paciente = request.POST['id_paciente']
+        id_medico = request.POST['id_medico']
+        paciente = Paciente.objects.filter(id=id_paciente).update(medico=id_medico)
+    return HttpResponse()
