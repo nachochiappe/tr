@@ -111,8 +111,10 @@ $(document).on('click', '.ibtnDerivar', function() {
 	    // Estos métodos HTTP no requieren protección CSRF
 	    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
 	}
-	id_paciente = 1;
-	id_medico = 21374127;
+	id_paciente = $('input[name=id_paciente]').val();
+	medico_seleccionado = $('#FormControlSelectMedico option:selected').text();
+	medico_seleccionado = medico_seleccionado.replace(', ', '');
+	id_medico = $('input[name=' + medico_seleccionado + ']').val();
 	$.ajax({
 		url: '/ajax/derivar_paciente/',
 		type: "POST",
@@ -126,8 +128,7 @@ $(document).on('click', '.ibtnDerivar', function() {
 	        }
 	    },
 		success: function(data) {
-			$("#derivar_modal_body").html('<div class="alert alert-success" role="alert">Paciente derivado</div>');
-			$("#derivar_modal_footer").html('<button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Cerrar</button>');
+			$("#derivar_modal_body").append('<div class="alert alert-success alert-dismissible fade show" role="alert">Paciente derivado.<button type="button" class="close" data-dismiss="alert" aria-label="Cerrar"><span aria-hidden="true">&times;</span></button></div>');
 		}
 	});
 });
