@@ -2,32 +2,36 @@
 
 {% if user.is_authenticated %}
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="#">TR</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <div class="navbar-nav">
-                <a class="nav-item nav-link active" href="#">Home <span class="sr-only">(current)</span></a>
-            {% if request.user|has_group:"medicos" %}
-                <a class="nav-item nav-link" href='{% url "pacientes" %}'>Todos los Pacientes</a>
-                <a class="nav-item nav-link" href='{% url "pacientes" %}'>Mis Pacientes</a>
-                <a class="nav-item nav-link" href="">Mis Alertas</a>
-                <a class="nav-item nav-link" href="">Agenda Médica</a>
-            {% elif request.user|has_group:"pacientes" %}
-                <a class="nav-item nav-link" href="">Mis Datos Personales</a>
-                <a class="nav-item nav-link" href="">Mis Medicaciones</a>
-                <a class="nav-item nav-link" href="">Mis Estudios</a>
-                <a class="nav-item nav-link" href="">Mis Alertas</a>
-            {% else %}
-                <a class="nav-item nav-link" href='{% url "especialidad-crear" %}'>Crear Especialidad</a>
-                <a class="nav-item nav-link" href='{% url "especialidades" %}'>Todas las Especialidades</a>
-                <a class="nav-item nav-link" href='{% url "medico-crear" %}'>Crear Médico</a>
-                <a class="nav-item nav-link" href='{% url "medicos" %}'>Todos los Médicos</a>
-                <a class="nav-item nav-link" href='{% url "paciente-crear" %}'>Crear Paciente</a>
-                <a class="nav-item nav-link" href='{% url "pacientes" %}'>Todos los Pacientes</a>
-            {% endif %}
+    <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#"><img src="/static/img/favicon-32x32.png"></a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <div class="navbar-nav">
+                    <a class="nav-item nav-link active" href="#">Home <span class="sr-only">(current)</span></a>
+                {% if request.user|has_group:"medicos" %}
+                    <a class="nav-item nav-link" href='{% url "pacientes" %}'>Todos los Pacientes</a>
+                    <a class="nav-item nav-link" href='{% url "pacientes" %}'>Mis Pacientes</a>
+                    <a class="nav-item nav-link" href="">Mis Alertas</a>
+                    <a class="nav-item nav-link" href="">Agenda Médica</a>
+                {% elif request.user|has_group:"pacientes" %}
+                    <a class="nav-item nav-link" href="">Mis Datos Personales</a>
+                    <a class="nav-item nav-link" href="">Mis Medicaciones</a>
+                    <a class="nav-item nav-link" href="">Mis Estudios</a>
+                    <a class="nav-item nav-link" href="">Mis Alertas</a>
+                {% else %}
+                    <a class="nav-item nav-link" href='{% url "especialidad-crear" %}'>Nueva Especialidad</a>
+                    <a class="nav-item nav-link" href='{% url "especialidades" %}'>Todas las Especialidades</a>
+                    <a class="nav-item nav-link" href='{% url "medico-crear" %}'>Nuevo Médico</a>
+                    <a class="nav-item nav-link" href='{% url "medicos" %}'>Todos los Médicos</a>
+                    <a class="nav-item nav-link" href='{% url "paciente-crear" %}'>Nuevo Paciente</a>
+                    <a class="nav-item nav-link" href='{% url "pacientes" %}'>Todos los Pacientes</a>
+                {% endif %}
+                </div>
             </div>
         </div>
     </nav>

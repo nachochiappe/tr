@@ -1,7 +1,11 @@
-.table-condensed{
+body {
+	padding-top: 60px;
+}
+
+.table-condensed {
 	font-size: 12px;
 }
 
-.btn{
+.btn {
 	font-size: 12px;
 }

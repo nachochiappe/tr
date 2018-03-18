@@ -63,4 +63,30 @@ function borrar_medicamento(itemactual, id) {
 			itemactual.closest('tr').remove();
 		}
 	});
-}
+};
+
+// FUNCIONES DE DERIVAR PACIENTE
+
+$(document).one('click', '.derivar-paciente', function() {
+	$.ajax({
+		url: '/ajax/obtener_especialidades/',
+		type: "GET",
+		success: function(data) {
+			var lista_especialidades = document.getElementById('FormControlSelectEspecialidad');
+			for (var i = 0; i < 2; i++) {
+				$(lista_especialidades).append('<option>' + data['especialidades'][i]['nombre'] + '</option>');
+			}
+			id = data['especialidades'][0]['id'];
+			$.ajax({
+				url: '/ajax/obtener_medicos/' + id,
+				type: "GET",
+				success: function(data) {
+					var lista_medicos = document.getElementById('FormControlSelectMedico');
+					for (var i = 0; i < 1; i++) {
+						$(lista_medicos).append('<option>' + data['medicos'][i]['apellido'] + ', ' + data['medicos'][i]['nombre'] + '</option>');
+					}
+				}
+			});
+		}
+	});
+});
