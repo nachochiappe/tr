@@ -31,7 +31,7 @@ class Paciente(models.Model):
         return nombre_completo
 
     def get_absolute_url(self):
-        return reverse('paciente-detalle', kwargs={'id': self.id})
+        return reverse('paciente_detalle', kwargs={'id': self.id})
 
 class Medicamento(models.Model):
     paciente = models.ForeignKey(
