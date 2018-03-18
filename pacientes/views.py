@@ -6,7 +6,6 @@ from django.views.generic.detail import SingleObjectMixin
 from django.contrib.auth.models import User, Group
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse, JsonResponse
-from django.forms.models import model_to_dict
 
 import datetime
 
@@ -34,25 +33,30 @@ class PacienteListView(LoginRequiredMixin, ListView):
 
 
 # Detalle de Pacientes
+
+def obtener_obj(self, *args, **kwargs):
+    paciente_id = self.kwargs.get('id')
+    paciente = get_object_or_404(Paciente, id=paciente_id)
+    medicamentos_vigentes = Medicamento.objects.filter(paciente=paciente).values()
+    medicamentos_vigentes = medicamentos_vigentes.filter(fecha_fin__gte=datetime.date.today())
+    medicamentos_novigentes = Medicamento.objects.filter(paciente=paciente).values()
+    medicamentos_novigentes = medicamentos_novigentes.filter(fecha_fin__lt=datetime.date.today())
+    estudios_vigentes = Estudio.objects.filter(paciente=paciente).values()
+    estudios_vigentes = estudios_vigentes.filter(fecha_completado__isnull=True)
+    estudios_novigentes = Estudio.objects.filter(paciente=paciente).values()
+    estudios_novigentes = estudios_novigentes.filter(fecha_completado__isnull=False)
+    obj = {'paciente': paciente, 'medicamentos_vigentes': medicamentos_vigentes, 'medicamentos_novigentes': medicamentos_novigentes,
+    'estudios_vigentes': estudios_vigentes, 'estudios_novigentes': estudios_novigentes}
+    return obj
+
+
 class PacienteDisplay(DetailView):
     template_name = 'pacientes/paciente_detail.html'
 
     queryset = Paciente.objects.all()
 
     def get_object(self, *args, **kwargs):
-        paciente_id = self.kwargs.get('id')
-        paciente = get_object_or_404(Paciente, id=paciente_id)
-        medicamentos_vigentes = Medicamento.objects.filter(paciente=paciente).values()
-        medicamentos_vigentes = medicamentos_vigentes.filter(fecha_fin__gte=datetime.date.today())
-        medicamentos_novigentes = Medicamento.objects.filter(paciente=paciente).values()
-        medicamentos_novigentes = medicamentos_novigentes.filter(fecha_fin__lt=datetime.date.today())
-        estudios_vigentes = Estudio.objects.filter(paciente=paciente).values()
-        estudios_vigentes = estudios_vigentes.filter(fecha_completado__isnull=True)
-        estudios_novigentes = Estudio.objects.filter(paciente=paciente).values()
-        estudios_novigentes = estudios_novigentes.filter(fecha_completado__isnull=False)
-        obj = {'paciente': paciente, 'medicamentos_vigentes': medicamentos_vigentes, 'medicamentos_novigentes': medicamentos_novigentes,
-        'estudios_vigentes': estudios_vigentes, 'estudios_novigentes': estudios_novigentes}
-        return obj
+        return obtener_obj(self, *args, **kwargs)
 
 
 class PacienteMedicamentoEstudio(SingleObjectMixin, FormView):
@@ -60,19 +64,7 @@ class PacienteMedicamentoEstudio(SingleObjectMixin, FormView):
     template_name = 'pacientes/paciente_detail.html'
 
     def get_object(self, *args, **kwargs):
-        paciente_id = self.kwargs.get('id')
-        paciente = get_object_or_404(Paciente, id=paciente_id)
-        medicamentos_vigentes = Medicamento.objects.filter(paciente=paciente).values()
-        medicamentos_vigentes = medicamentos_vigentes.filter(fecha_fin__gte=datetime.date.today())
-        medicamentos_novigentes = Medicamento.objects.filter(paciente=paciente).values()
-        medicamentos_novigentes = medicamentos_novigentes.filter(fecha_fin__lt=datetime.date.today())
-        estudios_vigentes = Estudio.objects.filter(paciente=paciente).values()
-        estudios_vigentes = estudios_vigentes.filter(fecha_completado__isnull=True)
-        estudios_novigentes = Estudio.objects.filter(paciente=paciente).values()
-        estudios_novigentes = estudios_novigentes.filter(fecha_completado__isnull=False)
-        obj = {'paciente': paciente, 'medicamentos_vigentes': medicamentos_vigentes, 'medicamentos_novigentes': medicamentos_novigentes,
-        'estudios_vigentes': estudios_vigentes, 'estudios_novigentes': estudios_novigentes}
-        return obj
+        return obtener_obj(self, *args, **kwargs)
 
     def form_valid(self, form):
         if 'medicamento' in form.cleaned_data:
@@ -90,6 +82,10 @@ class PacienteMedicamentoEstudio(SingleObjectMixin, FormView):
             medicamento.medico = medicamento.paciente.medico
             medicamento.fecha_inicio = form.cleaned_data['fecha_inicio']
             medicamento.fecha_fin = form.cleaned_data['fecha_fin']
+            dif_dias = (medicamento.fecha_fin - medicamento.fecha_inicio)
+            dif_dias_en_minutos = dif_dias.days * 24 * 60
+            dosis_a_tomar = dif_dias_en_minutos / medicamento.posologia
+            medicamento.dosis_a_tomar = dosis_a_tomar
             medicamento.dosis_completadas = 0
             medicamento.save()
             return self.render_to_response(self.get_context_data(form=form))
