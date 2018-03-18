@@ -46,6 +46,7 @@ class Medicamento(models.Model):
     )
     fecha_inicio = models.DateField()
     fecha_fin = models.DateField()
+    dosis_a_tomar = models.PositiveIntegerField()
     dosis_completadas = models.PositiveIntegerField()
 
     def __str__(self):
