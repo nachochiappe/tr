@@ -19,7 +19,7 @@
                 <tbody>
                     {% for paciente in object_list %}
                     <tr>
-                        <th scope="row"><a href='{{ paciente.get_absolute_url }}'>{{ paciente.id }}</a></th>
+                        <th scope="row"><a href='{{ paciente.get_absolute_url }}'>{{ forloop.counter }}</a></th>
                         <td>{{ paciente.nombre }}</td>
                         <td>{{ paciente.apellido }}</td>
                         <td>{{ paciente.dni }}</td>

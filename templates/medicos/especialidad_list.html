@@ -15,7 +15,7 @@
                 <tbody>
                     {% for especialidad in object_list %}
                     <tr>
-                        <th scope="row">{{ especialidad.id }}</th>
+                        <th scope="row">{{ forloop.counter }}</th>
                         <td>{{ especialidad.nombre }}</td>
                     </tr>
                     {% endfor %}
