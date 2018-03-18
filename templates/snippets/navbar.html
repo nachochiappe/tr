@@ -24,11 +24,11 @@
                     <a class="nav-item nav-link" href="">Mis Estudios</a>
                     <a class="nav-item nav-link" href="">Mis Alertas</a>
                 {% else %}
-                    <a class="nav-item nav-link" href='{% url "especialidad-crear" %}'>Nueva Especialidad</a>
+                    <a class="nav-item nav-link" href='{% url "especialidad_crear" %}'>Nueva Especialidad</a>
                     <a class="nav-item nav-link" href='{% url "especialidades" %}'>Todas las Especialidades</a>
-                    <a class="nav-item nav-link" href='{% url "medico-crear" %}'>Nuevo Médico</a>
+                    <a class="nav-item nav-link" href='{% url "medico_crear" %}'>Nuevo Médico</a>
                     <a class="nav-item nav-link" href='{% url "medicos" %}'>Todos los Médicos</a>
-                    <a class="nav-item nav-link" href='{% url "paciente-crear" %}'>Nuevo Paciente</a>
+                    <a class="nav-item nav-link" href='{% url "paciente_crear" %}'>Nuevo Paciente</a>
                     <a class="nav-item nav-link" href='{% url "pacientes" %}'>Todos los Pacientes</a>
                 {% endif %}
                 </div>
