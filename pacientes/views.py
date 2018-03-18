@@ -45,12 +45,11 @@ def obtener_obj(self, *args, **kwargs):
         dif_dias = fecha_hoy - medicamento['fecha_inicio']
         dif_dias_en_minutos = dif_dias.days * 24 * 60
         dosis_a_tomar = dif_dias_en_minutos / medicamento['posologia']
-        print(medicamento['medicamento'])
-        print(dosis_a_tomar)
-        print(medicamento['dosis_completadas'])
         if medicamento['dosis_completadas'] < dosis_a_tomar:
             medicamentos_sin_tomar.append(medicamento['medicamento'])
-    print(medicamentos_sin_tomar)
+    medicamentos_en_falta = 0
+    if medicamentos_sin_tomar:
+        medicamentos_en_falta = 1
     medicamentos_novigentes = Medicamento.objects.filter(paciente=paciente).values()
     medicamentos_novigentes = medicamentos_novigentes.filter(fecha_fin__lt=datetime.date.today())
     estudios_vigentes = Estudio.objects.filter(paciente=paciente).values()
@@ -58,7 +57,7 @@ def obtener_obj(self, *args, **kwargs):
     estudios_novigentes = Estudio.objects.filter(paciente=paciente).values()
     estudios_novigentes = estudios_novigentes.filter(fecha_completado__isnull=False)
     obj = {'paciente': paciente, 'medicamentos_vigentes': medicamentos_vigentes, 'medicamentos_novigentes': medicamentos_novigentes,
-    'estudios_vigentes': estudios_vigentes, 'estudios_novigentes': estudios_novigentes, 'medicamentos_sin_tomar': medicamentos_sin_tomar}
+    'estudios_vigentes': estudios_vigentes, 'estudios_novigentes': estudios_novigentes, 'medicamentos_sin_tomar': medicamentos_sin_tomar, 'medicamentos_en_falta': medicamentos_en_falta}
     return obj
 
 
