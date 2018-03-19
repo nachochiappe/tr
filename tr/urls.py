@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, LogoutView
 
 from medicos.views import *
 from pacientes.views import *
@@ -23,6 +23,7 @@ from pacientes.views import *
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^login/', LoginView.as_view(), name='login'),
+    url(r'^logout/', LogoutView.as_view(), name='logout'),
     url(r'^$', PacienteListView.as_view(), name='home'),
     url(r'^pacientes/$', PacienteListView.as_view(), name='pacientes'),
     url(r'^ajax/tomar_medicacion/$', tomar_medicacion, name='tomar_medicacion'),
