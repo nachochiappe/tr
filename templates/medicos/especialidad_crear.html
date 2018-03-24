@@ -6,9 +6,9 @@
 
 {% block content %}
 
-    <div class="card" style="margin-top: 15px;">
-        <h5 class="card-header">Crear Especialidad</h5>
-        <div class="card-body">
+	<div class="card" style="margin-top: 15px;">
+	    <h5 class="card-header">Crear Especialidad</h5>
+	    <div class="card-body">
 		    <form method="POST"> {% csrf_token %}
 		        {{ form.as_p }}
 		        <button type="submit">Guardar</button>
