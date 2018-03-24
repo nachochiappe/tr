@@ -1,4 +1,8 @@
-// FUNCIONES DE TOMAR MEDICACIÓN
+///////////////////////////////
+// FUNCIONES DE MEDICAMENTOS //
+///////////////////////////////
+
+// TOMAR MEDICACIÓN
 
 $(document).on('click','.ibtnTomar', function(){
 	var str = event.target.id;
@@ -30,7 +34,7 @@ function tomar_medicacion(id) {
 	});
 }
 
-// FUNCIONES DE BORRAR MEDICAMENTO
+// BORRAR MEDICAMENTO
 
 $(document).off('click', '.ibtnBorrar').on('click', '.ibtnBorrar', function() {
 	var itemactual = $(this);
@@ -65,7 +69,81 @@ function borrar_medicamento(itemactual, id) {
 	});
 };
 
-// FUNCIONES DE DERIVAR PACIENTE
+///////////////////////////
+// FUNCIONES DE ESTUDIOS //
+///////////////////////////
+
+// COMPLETAR ESTUDIO
+
+$(document).on('click', '.ibtnCompletar', function() {
+	var str = event.target.id;
+	var id = parseInt(str.replace('completar-', ''));
+	completar_estudio(id);
+});
+
+function completar_estudio(id) {
+	var csrftoken = Cookies.get('csrftoken');
+	function csrfSafeMethod(method) {
+	    // Estos métodos HTTP no requieren protección CSRF
+	    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+	}
+	$.ajax({
+		url: '/ajax/completar_estudio/',
+		type: "POST",
+		data: {
+			'id': id,
+		},
+		beforeSend: function(xhr, settings) {
+	        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+	            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+	        }
+	    },
+		success: function(data) {
+		    $("#estado-estudio-"+id).html("Completado");
+		}
+	});
+}
+
+// BORRAR ESTUDIO
+
+$(document).off('click', '.ibtnBorrarEst').on('click', '.ibtnBorrarEst', function() {
+	var itemactual = $(this);
+	var str = event.target.id;
+	var id = parseInt(str.replace('borrarest-', ''));
+	$(document).off('click', '.btn-confirmar').on('click','.btn-confirmar', function() {
+		$("#estudioModal").modal('hide');
+		borrar_estudio(itemactual, id);
+	});
+});
+
+function borrar_estudio(itemactual, id) {
+	var csrftoken = Cookies.get('csrftoken');
+	function csrfSafeMethod(method) {
+	    // Estos métodos HTTP no requieren protección CSRF
+	    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+	}
+	$.ajax({
+		url: '/ajax/borrar_estudio/',
+		type: "POST",
+		data: {
+			'id': id,
+		},
+		beforeSend: function(xhr, settings) {
+	        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+	            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+	        }
+	    },
+		success: function(data) {
+			itemactual.closest('tr').remove();
+		}
+	});
+};
+
+////////////////////////////
+// FUNCIONES DE PACIENTES //
+////////////////////////////
+
+// DERIVAR PACIENTE
 
 $(document).one('click', '.derivar-paciente', function() {
 	$.ajax({
@@ -132,3 +210,5 @@ $(document).on('click', '.ibtnDerivar', function() {
 		}
 	});
 });
+
+// ELIMINAR PACIENTE

@@ -72,20 +72,12 @@
     <div id="accordion" role="tablist" style="margin-top: 15px; margin-bottom: 15px">
         <div class="card">
             <div class="card-header" role="tab" id="headingOne">
-                {% if object.medicamentos_en_falta == 1 %}
                 <h6 class="mb-0">
-                    <a data-toggle="collapse" href="#medicamentos" role="button" aria-expanded="true" aria-controls="medicamentos">
-                        Medicamentos
-                    </a>
+                    <a data-toggle="collapse" href="#medicamentos" role="button" aria-expanded="true" aria-controls="medicamentos">Medicamentos</a>
+                    {% if object.medicamentos_en_falta == 1 %}
                     <span class="badge badge-danger">Revisar</span>
+                    {% endif %}
                 </h6>
-                {% else %}
-                <h6 class="mb-0">
-                    <a data-toggle="collapse" href="#medicamentos" role="button" aria-expanded="true" aria-controls="medicamentos">
-                        Medicamentos
-                    </a>
-                </h6>
-                {% endif %}
             </div>
 
             <div id="medicamentos" class="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
@@ -205,6 +197,9 @@
             <div class="card-header" role="tab" id="headingTwo">
                 <h6 class="mb-0">
                     <a data-toggle="collapse" href="#estudiosyactividades" role="button" aria-expanded="true" aria-controls="estudiosyactividades">Estudios y Actividades</a>
+                    {% if object.estudios_vigentes %}
+                    <span class="badge badge-danger">Revisar</span>
+                    {% endif %}
                 </h6>
             </div>
 
@@ -233,10 +228,10 @@
                                         <th scope="row">{{ estudio.estudio }}</th>
                                         <td>{{ estudio.medico_id }}</td>
                                         <td>{{ estudio.fecha_solicitud }}</td>
-                                        <td>Pendiente</td>
-                                        <td><input type="button" class="ibtnCompletar btn btn-sm btn-success" value="Completar Estudio">
-                                            <input type="button" class="ibtnEdit btn btn-sm btn-info" value="Editar">
-                                            <input type="button" class="ibtnBorrar btn btn-sm btn-danger" data-toggle="modal" data-target="#estudioModal" value="Borrar"></td>
+                                        <td id="estado-estudio-{{estudio.id}}">Pendiente</td>
+                                        <td><input type="button" class="ibtnCompletar btn btn-sm btn-success" id="completar-{{estudio.id}}" value="Completar Estudio">
+                                            <input type="button" class="ibtnEdit btn btn-sm btn-info" id="editarest-{{estudio.id}}" value="Editar">
+                                            <input type="button" class="ibtnBorrarEst btn btn-sm btn-danger" data-toggle="modal" data-target="#estudioModal"  id="borrarest-{{estudio.id}}" value="Borrar"></td>
                                     </tr>
                                     {% endfor %}
                               </tbody>
@@ -257,7 +252,7 @@
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Cerrar</button>
-                                            <button type="button" class="btn btn-sm btn-danger">Eliminar</button>
+                                            <button type="button" class="btn btn-sm btn-danger btn-confirmar">Eliminar</button>
                                         </div>
                                     </div>
                                 </div>

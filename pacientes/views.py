@@ -173,6 +173,15 @@ def borrar_medicamento(request):
     return HttpResponse()
 
 
+def completar_estudio(request):
+    if request.method == 'POST':
+        id = request.POST['id']
+        estudio = Estudio.objects.get(id=id)
+        estudio.fecha_completado = datetime.date.today()
+        estudio.save()
+    return HttpResponse()
+
+
 def borrar_estudio(request):
     if request.method == 'POST':
         id = request.POST['id']
