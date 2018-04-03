@@ -1,12 +1,12 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 
 
 class Administrador(models.Model):
-    dni = models.PositiveIntegerField(unique=True, primary_key=True)
-    nombre = models.CharField(max_length=50)
-    apellido = models.CharField(max_length=50)
+    usuario = models.OneToOneField(User, on_delete=models.CASCADE)
+    documento = models.PositiveIntegerField(unique=True, primary_key=True)
     creado = models.DateTimeField(auto_now_add=True)
     modificado = models.DateTimeField(auto_now=True)
 

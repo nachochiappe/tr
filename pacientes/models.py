@@ -1,7 +1,8 @@
 from django.conf import settings
 from django.db import models
+from django.contrib.auth.models import User, Group
 from django_countries.fields import CountryField
-from django.db.models.signals import pre_save
+from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
 from django.urls import reverse
 
@@ -12,11 +13,9 @@ from medicos.models import Medico
 User = settings.AUTH_USER_MODEL
 
 class Paciente(models.Model):
-    nombre = models.CharField(max_length=50)
-    apellido = models.CharField(max_length=50)
+    usuario = models.OneToOneField(User, on_delete=models.CASCADE)
     fecnac = models.DateField()
-    dni = models.PositiveIntegerField(unique=True)
-    mail = models.EmailField()
+    documento = models.PositiveIntegerField(unique=True)
     pais = CountryField()
     medico = models.ForeignKey(
         Medico,
@@ -27,7 +26,7 @@ class Paciente(models.Model):
     modificado = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        nombre_completo = self.apellido + ", " + self.nombre
+        nombre_completo = self.usuario.last_name + ", " + self.usuario.first_name
         return nombre_completo
 
     def get_absolute_url(self):
@@ -72,5 +71,5 @@ class Estudio(models.Model):
 
 @receiver(pre_save, sender=Paciente)
 def pre_save(sender, instance, *args, **kwargs):
-    instance.nombre = instance.nombre.capitalize()
-    instance.apellido = instance.apellido.capitalize()
+    instance.usuario.first_name = instance.usuario.first_name.capitalize()
+    instance.usuario.last_name= instance.usuario.last_name.capitalize()

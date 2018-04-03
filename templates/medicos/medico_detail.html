@@ -7,13 +7,13 @@
         <div class="card-body">
             <dl class="row">
                 <dt class="col-sm-3">Nombre</dt>
-                <dd class="col-sm-9">{{ object.nombre }}</dd>
+                <dd class="col-sm-9">{{ object.usuario.first_name }}</dd>
                 <dt class="col-sm-3">Apellido</dt>
-                <dd class="col-sm-9">{{ object.apellido }}</dd>
-                <dt class="col-sm-3">DNI</dt>
-                <dd class="col-sm-9">{{ object.dni }}</dd>
-                <dt class="col-sm-3">Mail</dt>
-                <dd class="col-sm-9">{{ object.mail }}</dd>
+                <dd class="col-sm-9">{{ object.usuario.last_name }}</dd>
+                <dt class="col-sm-3">Documento</dt>
+                <dd class="col-sm-9">{{ object.documento }}</dd>
+                <dt class="col-sm-3">E-Mail</dt>
+                <dd class="col-sm-9">{{ object.usuario.email }}</dd>
             </dl>
         </div>
         {% if request.user.is_staff %}

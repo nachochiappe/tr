@@ -145,14 +145,31 @@ class PacienteDetailView(LoginRequiredMixin, View):
 class PacienteCreateView(LoginRequiredMixin, CreateView):
     form_class = PacienteCreateForm
     template_name = 'pacientes/paciente_crear.html'
+    success_url = '/pacientes/'
 
     def form_valid(self, form):
-        user = User.objects.create_user(str(form.cleaned_data['dni']), form.cleaned_data['mail'], str(form.cleaned_data['dni']))
-        user.first_name = form.cleaned_data['nombre']
-        user.last_name = form.cleaned_data['apellido']
+        c = {'form': form, }
+        user = form.save(commit=False)
+        username = form.cleaned_data['documento']
+        password = form.cleaned_data['documento']
+        first_name = form.cleaned_data['first_name']
+        last_name = form.cleaned_data['last_name']
+        email = form.cleaned_data['email']
+        fecnac = form.cleaned_data['fecnac']
+        pais = form.cleaned_data['pais']
+        medico = form.cleaned_data['medico']
+        user.username = username
+        user.set_password(password)
         grupo = Group.objects.get(name='pacientes')
-        user.groups.add(grupo)
         user.save()
+        user.groups.add(grupo)
+        Paciente.objects.create(
+            usuario=user,
+            documento=username,
+            fecnac=fecnac,
+            pais=pais,
+            medico=medico
+        )
         return super().form_valid(form)
 
 
@@ -196,7 +213,15 @@ def obtener_especialidades(request):
 
 def obtener_medicos(request, id):
     medicos = Medico.objects.filter(especialidad=id).values()
-    return JsonResponse({"medicos": list(medicos)})
+    lista_medicos = []
+    for medico in medicos:
+        datos_medico = {}
+        usuario = User.objects.get(pk=medico['usuario_id'])
+        datos_medico["nombre"] = usuario.last_name + ", " + usuario.first_name
+        datos_medico["documento"] = medico['documento']
+        lista_medicos.append(datos_medico)
+    print(lista_medicos)
+    return JsonResponse({"medicos": lista_medicos})
 
 
 def derivar_paciente(request):

@@ -11,17 +11,17 @@
                         <th scope="col">#</th>
                         <th scope="col">Nombre</th>
                         <th scope="col">Apellido</th>
-                        <th scope="col">DNI</th>
+                        <th scope="col">Documento</th>
                         <th scope="col">Especialidad</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for medico in object_list %}
                     <tr>
-                        <th scope="row"><a href="/medicos/{{ medico.dni }}/">{{ forloop.counter }}</a></th>
-                        <td>{{ medico.nombre }}</td>
-                        <td>{{ medico.apellido }}</td>
-                        <td>{{ medico.dni }}</td>
+                        <th scope="row"><a href="/medicos/{{ medico.documento }}/">{{ forloop.counter }}</a></th>
+                        <td>{{ medico.usuario.first_name }}</td>
+                        <td>{{ medico.usuario.last_name }}</td>
+                        <td>{{ medico.documento }}</td>
                         <td>{{ medico.especialidad }}</td>
                     </tr>
                     {% endfor %}

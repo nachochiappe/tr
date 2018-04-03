@@ -12,16 +12,16 @@
                         <tbody>
                             <tr>
                                 <td>Nombre</td>
-                                <td>{{ object.paciente.nombre }}</td>
+                                <td>{{ object.paciente.usuario.first_name }}</td>
                                 <input type="hidden" name="id_paciente" value="{{object.paciente.id}}">
                             </tr>
                             <tr>
                                 <td>Apellido</td>
-                                <td>{{ object.paciente.apellido }}</td>
+                                <td>{{ object.paciente.usuario.last_name}}</td>
                             </tr>
                             <tr>
                                 <td>Documento</td>
-                                <td>{{ object.paciente.dni }}</td>
+                                <td>{{ object.paciente.documento }}</td>
                             </tr>
                             <tr>
                                 <td>Fecha de Nacimiento</td>
@@ -33,7 +33,7 @@
                             </tr>
                             <tr>
                                 <td>E-Mail</td>
-                                <td>{{ object.paciente.mail }}</td>
+                                <td>{{ object.paciente.usuario.email }}</td>
                             </tr>
                         </tbody>
                     </table>

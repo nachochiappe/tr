@@ -174,10 +174,10 @@ function obtenerMedicos() {
 		type: "GET",
 		success: function(data) {
 			var lista_medicos = document.getElementById('FormControlSelectMedico');
-			var cantidad_medicos = data['medicos'].length;
-			for (var i = 0; i < cantidad_medicos; i++) {
-				$(lista_medicos).append('<option>' + data['medicos'][i]['apellido'] + ', ' + data['medicos'][i]['nombre'] + '</option>');
-				$(lista_medicos).append('<input type="hidden" name="' + data['medicos'][i]['apellido'] + data['medicos'][i]['nombre'] + '" value="' + data['medicos'][i]['dni'] + '">');
+			for (var i = 0; i < data.medicos.length; i++) {
+				var medico = data.medicos[i];
+				$(lista_medicos).append('<option>' + medico.nombre + '</option>');
+				$(lista_medicos).append('<input type="hidden" name="' + medico.nombre + '" value="' + medico.documento + '">');
 			}
 		}
 	});	

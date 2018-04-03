@@ -1,7 +1,10 @@
 from django import forms
-from django_countries.fields import CountryField
-
+from django_countries.fields import LazyTypedChoiceField
+from django_countries.widgets import CountrySelectWidget
+from django_countries import countries
+from django.contrib.auth.models import User
 from .models import Paciente, Medicamento, Estudio
+from medicos.models import Medico
 
 import datetime
 
@@ -13,22 +16,18 @@ class PacienteCreateForm(forms.ModelForm):
     )
     fecnac = forms.DateField(widget = forms.SelectDateWidget(years=BIRTH_YEAR_CHOICES))
     fecnac.label = "Fecha de Nacimiento"
+    documento = forms.IntegerField()
+    pais = LazyTypedChoiceField(choices=countries)
+    medico = forms.ModelChoiceField(queryset=Medico.objects.all())
     class Meta:
-        model = Paciente
-        fields = [
-            'nombre',
-            'apellido',
-            'fecnac',
-            'dni',
-            'mail',
-            'pais',
-            'medico',
-        ]
+        model = User
+        fields = ['first_name', 'last_name', 'email', 'documento', 'fecnac', 'pais', 'medico']
+        widgets = {'pais': CountrySelectWidget()}
         labels = {
-            "nombre" : "Nombre",
-            "apellido" : "Apellido",
-            "dni" : "DNI",
-            "mail" : "E-Mail",
+            "first_name" : "Nombre",
+            "last_name" : "Apellido",
+            "documento" : "Documento",
+            "email" : "E-Mail",
             "pais" : "País",
             "medico" : "Médico",
         }
