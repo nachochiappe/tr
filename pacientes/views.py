@@ -36,7 +36,7 @@ class PacienteListView(LoginRequiredMixin, ListView):
 
 def obtener_obj(self, *args, **kwargs):
     paciente_id = self.kwargs.get('id')
-    paciente = get_object_or_404(Paciente, id=paciente_id)
+    paciente = get_object_or_404(Paciente, documento=paciente_id)
     medicamentos_vigentes = Medicamento.objects.filter(paciente=paciente).values()
     medicamentos_vigentes = medicamentos_vigentes.filter(fecha_fin__gte=datetime.date.today())
     fecha_hoy = datetime.date.today()

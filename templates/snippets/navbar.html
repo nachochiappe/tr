@@ -15,14 +15,14 @@
                     <a class="nav-item nav-link active" href="#">Home <span class="sr-only">(current)</span></a>
                 {% if request.user|has_group:"medicos" %}
                     <a class="nav-item nav-link" href='{% url "pacientes" %}'>Todos los Pacientes</a>
-                    <a class="nav-item nav-link" href='{% url "medico_pacientes" user.id %}'>Mis Pacientes</a>
-                    <a class="nav-item nav-link" href='{% url "medico_alertas" user.id %}'>Mis Alertas</a>
-                    <a class="nav-item nav-link" href='{% url "medico_agenda" user.id %}'>Agenda Médica</a>
+                    <a class="nav-item nav-link" href='{% url "medico_pacientes" user.get_username %}'>Mis Pacientes</a>
+                    <a class="nav-item nav-link" href='{% url "medico_alertas" user.get_username %}'>Mis Alertas</a>
+                    <a class="nav-item nav-link" href='{% url "medico_agenda" user.get_username %}'>Agenda Médica</a>
                 {% elif request.user|has_group:"pacientes" %}
-                    <a class="nav-item nav-link" href='{% url "paciente_detalle" user.id %}'>Mis Datos Personales</a>
-                    <a class="nav-item nav-link" href='{% url "paciente_medicamentos" user.id %}'>Mis Medicaciones</a>
-                    <a class="nav-item nav-link" href='{% url "paciente_estudios" user.id %}'>Mis Estudios</a>
-                    <a class="nav-item nav-link" href='{% url "paciente_alertas" user.id %}'>Mis Alertas</a>
+                    <a class="nav-item nav-link" href='{% url "paciente_detalle" user.get_username %}'>Mis Datos Personales</a>
+                    <a class="nav-item nav-link" href='{% url "paciente_medicamentos" user.get_username %}'>Mis Medicaciones</a>
+                    <a class="nav-item nav-link" href='{% url "paciente_estudios" user.get_username %}'>Mis Estudios</a>
+                    <a class="nav-item nav-link" href='{% url "paciente_alertas" user.get_username %}'>Mis Alertas</a>
                 {% else %}
                     <a class="nav-item nav-link" href='{% url "especialidad_crear" %}'>Nueva Especialidad</a>
                     <a class="nav-item nav-link" href='{% url "especialidades" %}'>Todas las Especialidades</a>

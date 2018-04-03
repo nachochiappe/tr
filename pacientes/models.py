@@ -15,7 +15,7 @@ User = settings.AUTH_USER_MODEL
 class Paciente(models.Model):
     usuario = models.OneToOneField(User, on_delete=models.CASCADE)
     fecnac = models.DateField()
-    documento = models.PositiveIntegerField(unique=True)
+    documento = models.PositiveIntegerField(unique=True, primary_key=True)
     pais = CountryField()
     medico = models.ForeignKey(
         Medico,
@@ -30,7 +30,7 @@ class Paciente(models.Model):
         return nombre_completo
 
     def get_absolute_url(self):
-        return reverse('paciente_detalle', kwargs={'id': self.id})
+        return reverse('paciente_detalle', kwargs={'id': self.documento})
 
 class Medicamento(models.Model):
     paciente = models.ForeignKey(
