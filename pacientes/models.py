@@ -49,7 +49,7 @@ class Medicamento(models.Model):
     dosis_completadas = models.PositiveIntegerField()
 
     def __str__(self):
-        return(str(self.paciente.dni) + "_" + self.medicamento)
+        return(str(self.paciente.documento) + "_" + self.medicamento)
 
 
 class Estudio(models.Model):
@@ -66,7 +66,7 @@ class Estudio(models.Model):
     fecha_completado = models.DateField(null=True, blank=True)
 
     def __str__(self):
-        return(str(self.paciente.dni) + "_" + self.estudio)
+        return(str(self.paciente.documento) + "_" + self.estudio)
 
 
 @receiver(pre_save, sender=Paciente)
