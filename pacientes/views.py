@@ -37,7 +37,7 @@ class PacienteListView(LoginRequiredMixin, ListView):
 def obtener_obj(self, *args, **kwargs):
     paciente_id = self.kwargs.get('id')
     paciente = get_object_or_404(Paciente, documento=paciente_id)
-    medicamentos_vigentes = Medicamento.objects.filter(paciente=paciente).values()
+    medicamentos_vigentes = Medicamento.objects.filter(paciente=paciente).select_related().values()
     medicamentos_vigentes = medicamentos_vigentes.filter(fecha_fin__gte=datetime.date.today())
     fecha_hoy = datetime.date.today()
     medicamentos_sin_tomar = []
@@ -50,14 +50,21 @@ def obtener_obj(self, *args, **kwargs):
     medicamentos_en_falta = 0
     if medicamentos_sin_tomar:
         medicamentos_en_falta = 1
-    medicamentos_novigentes = Medicamento.objects.filter(paciente=paciente).values()
+    medicamentos_novigentes = Medicamento.objects.filter(paciente=paciente).select_related().values()
     medicamentos_novigentes = medicamentos_novigentes.filter(fecha_fin__lt=datetime.date.today())
-    estudios_vigentes = Estudio.objects.filter(paciente=paciente).values()
+    estudios_vigentes = Estudio.objects.filter(paciente=paciente).select_related().values()
     estudios_vigentes = estudios_vigentes.filter(fecha_completado__isnull=True)
-    estudios_novigentes = Estudio.objects.filter(paciente=paciente).values()
+    estudios_novigentes = Estudio.objects.filter(paciente=paciente).select_related().values()
     estudios_novigentes = estudios_novigentes.filter(fecha_completado__isnull=False)
-    obj = {'paciente': paciente, 'medicamentos_vigentes': medicamentos_vigentes, 'medicamentos_novigentes': medicamentos_novigentes,
-    'estudios_vigentes': estudios_vigentes, 'estudios_novigentes': estudios_novigentes, 'medicamentos_sin_tomar': medicamentos_sin_tomar, 'medicamentos_en_falta': medicamentos_en_falta}
+    obj = {
+        'paciente': paciente,
+        'medicamentos_vigentes': medicamentos_vigentes,
+        'medicamentos_novigentes': medicamentos_novigentes,
+        'estudios_vigentes': estudios_vigentes,
+        'estudios_novigentes': estudios_novigentes,
+        'medicamentos_sin_tomar': medicamentos_sin_tomar,
+        'medicamentos_en_falta': medicamentos_en_falta
+    }
     return obj
 
 
@@ -176,7 +183,7 @@ class PacienteCreateView(LoginRequiredMixin, CreateView):
 def tomar_medicacion(request):
     if request.method == 'POST':
         id = request.POST['id']
-        medicamento = Medicamento.objects.get(id=id)
+        medicamento = Medicamento.objects.select_related().get(id=id)
         dosis = medicamento.dosis_completadas + 1
         medicamento.dosis_completadas = dosis
         medicamento.save()
@@ -186,14 +193,14 @@ def tomar_medicacion(request):
 def borrar_medicamento(request):
     if request.method == 'POST':
         id = request.POST['id']
-        Medicamento.objects.filter(id=id).delete()
+        Medicamento.objects.filter(id=id).select_related().delete()
     return HttpResponse()
 
 
 def completar_estudio(request):
     if request.method == 'POST':
         id = request.POST['id']
-        estudio = Estudio.objects.get(id=id)
+        estudio = Estudio.objects.select_related().get(id=id)
         estudio.fecha_completado = datetime.date.today()
         estudio.save()
     return HttpResponse()
@@ -202,7 +209,7 @@ def completar_estudio(request):
 def borrar_estudio(request):
     if request.method == 'POST':
         id = request.POST['id']
-        Estudio.objects.filter(id=id).delete()
+        Estudio.objects.filter(id=id).select_related().delete()
     return HttpResponse()
 
 
@@ -212,7 +219,7 @@ def obtener_especialidades(request):
 
 
 def obtener_medicos(request, id):
-    medicos = Medico.objects.filter(especialidad=id).values()
+    medicos = Medico.objects.filter(especialidad=id).select_related().values()
     lista_medicos = []
     for medico in medicos:
         datos_medico = {}
@@ -228,5 +235,5 @@ def derivar_paciente(request):
     if request.method == 'POST':
         id_paciente = request.POST['id_paciente']
         id_medico = request.POST['id_medico']
-        paciente = Paciente.objects.filter(id=id_paciente).update(medico=id_medico)
+        paciente = Paciente.objects.filter(id=id_paciente).select_related().update(medico=id_medico)
     return HttpResponse()
