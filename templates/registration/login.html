@@ -2,25 +2,33 @@
 
 {% block content %}
 
-{% if form.errors %}
-<p>Usuario y/o contraseña incorrectos. Por favor, intente nuevamente.</p>
-{% endif %}
+<div class="container">
+	{% if form.errors %}
+	<p>Usuario y/o contraseña incorrectos. Por favor, intente nuevamente.</p>
+	{% endif %}
 
-{% if next %}
-    {% if user.is_authenticated %}
-    <p>Su usuario no tiene permisos para acceder a esta página.</p>
-    {% else %}
-    <p>Por favor, inicie sesión.</p>
+	{% if next %}
+		<input type="hidden" name="next" value="{{ next }}" />
+	{% endif %}
+	{% if user.is_authenticated %}
+		<h4 class="form-signin-heading">Su usuario no tiene permisos para acceder a esta página.</h4>
+	{% else %}
+		<form class="form-signin" name="LoginForm" method="POST" action="{% url 'login' %}">
+		{% csrf_token %}
+			<h2 class="form-signin-heading">Inicie sesión</h2>
+			<label for="username" class="sr-only">Usuario</label>
+			<input type="text" id="username" name="username" class="form-control" placeholder="Usuario" required autofocus>
+			<label for="password" class="sr-only">Contraseña</label>
+			<input type="password" id="password" name="password" class="form-control" placeholder="Contraseña" required>
+			<div class="checkbox">
+				<label>
+					<input type="checkbox" value="recordarme">Recordarme
+				</label>
+			</div>
+			<button class="btn btn-lg btn-primary btn-block" type="submit">Iniciar sesión</button>
+			
+		</form>
     {% endif %}
-{% endif %}
-
-<form method="post" action="{% url 'login' %}">
-{% csrf_token %}
-
-{{ form.as_p }}
-
-<input type="submit" value="login" />
-<input type="hidden" name="next" value="{{ next }}" />
-</form>
+</div>
 
 {% endblock %}
