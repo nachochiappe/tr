@@ -42,10 +42,7 @@ def obtener_obj(self, *args, **kwargs):
     fecha_hoy = datetime.date.today()
     medicamentos_sin_tomar = []
     for medicamento in medicamentos_vigentes:
-        dif_dias = fecha_hoy - medicamento['fecha_inicio']
-        dif_dias_en_minutos = dif_dias.days * 24 * 60
-        dosis_a_tomar = dif_dias_en_minutos / medicamento['posologia']
-        if medicamento['dosis_completadas'] < dosis_a_tomar:
+        if medicamento['dosis_completadas'] < medicamento['dosis_a_tomar']:
             medicamentos_sin_tomar.append(medicamento['medicamento'])
     medicamentos_en_falta = 0
     if medicamentos_sin_tomar:
@@ -227,7 +224,6 @@ def obtener_medicos(request, id):
         datos_medico["nombre"] = usuario.last_name + ", " + usuario.first_name
         datos_medico["documento"] = medico['documento']
         lista_medicos.append(datos_medico)
-    print(lista_medicos)
     return JsonResponse({"medicos": lista_medicos})
 
 

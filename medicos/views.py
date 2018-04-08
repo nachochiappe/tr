@@ -4,8 +4,11 @@ from django.views.generic import ListView, DetailView, CreateView
 from django.contrib.auth.models import User, Group
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+import datetime
+
 from .forms import EspecialidadCreateForm, UserMedicoCreateForm
 from .models import Especialidad, Medico
+from pacientes.models import Paciente, Medicamento
 
 # Create your views here.
 
@@ -24,6 +27,36 @@ class MedicoListView(LoginRequiredMixin, ListView):
         else:
             queryset = Medico.objects.all()
         return queryset
+
+
+# Mis Pacientes
+class MedicoPacientesListView(LoginRequiredMixin, ListView):
+    template_name = 'medicos/medico_pacientes_list.html'
+
+    def get_queryset(self):
+        medico_id = self.request.user.username
+        queryset = Paciente.objects.filter(medico_id=medico_id).select_related()
+        return queryset
+
+
+# Mis Alertas
+class MedicoAlertasListView(LoginRequiredMixin, ListView):
+    template_name = 'medicos/medico_alertas.html'
+
+    def get_queryset(self):
+        medico_documento = self.request.user.username
+        mis_pacientes = Paciente.objects.filter(medico_id=medico_documento).select_related().values_list('documento', flat=True)
+        medicamentos_mis_pacientes = Medicamento.objects.filter(paciente_id__in=mis_pacientes).values()
+        fecha_hoy = datetime.date.today()
+        medicamentos_sin_tomar = []
+        for medicamento in medicamentos_mis_pacientes:
+            if medicamento['dosis_completadas'] < medicamento['dosis_a_tomar']:
+                medicamentos_sin_tomar.append(medicamento)
+        medicamentos_en_falta = 0
+        if medicamentos_sin_tomar:
+            medicamentos_en_falta = 1
+        print(medicamentos_sin_tomar)
+        return medicamentos_sin_tomar
 
 
 # Detalle de Médico
