@@ -3,19 +3,17 @@
 {% block content %}
 
 <div class="container">
-	{% if form.errors %}
-	<p>Usuario y/o contraseña incorrectos. Por favor, intente nuevamente.</p>
-	{% endif %}
-
 	{% if next %}
 		<input type="hidden" name="next" value="{{ next }}" />
 	{% endif %}
+	<div class="row">
+		<div class="col"><div class="d-flex justify-content-center"><img src="/static/img/favicon-128.png"></div></div>
+	</div>
 	{% if user.is_authenticated %}
 		<h4 class="form-signin-heading">Su usuario no tiene permisos para acceder a esta página.</h4>
 	{% else %}
 		<form class="form-signin" name="LoginForm" method="POST" action="{% url 'login' %}">
 		{% csrf_token %}
-			<h2 class="form-signin-heading">Inicie sesión</h2>
 			<label for="username" class="sr-only">Usuario</label>
 			<input type="text" id="username" name="username" class="form-control" placeholder="Usuario" required autofocus>
 			<label for="password" class="sr-only">Contraseña</label>
@@ -25,8 +23,10 @@
 					<input type="checkbox" value="recordarme">Recordarme
 				</label>
 			</div>
+			{% if form.errors %}
+			<h6><font color="red">Usuario y/o contraseña incorrectos. Por favor, intente nuevamente.</font></h6>
+			{% endif %}
 			<button class="btn btn-lg btn-primary btn-block" type="submit">Iniciar sesión</button>
-			
 		</form>
     {% endif %}
 </div>
