@@ -1,11 +1,50 @@
 {% extends 'base.html' %}
 
+{% load mathfilters %}
+
 {% block content %}
 
 	<div class="card" style="margin-top: 15px;">
-        <h5 class="card-header">Mis Alertas</h5>
+        <h5 class="card-header">Mis Alertas
+        	{% if object_list.medicamentos_en_falta > 0 %}
+            	<span class="badge badge-danger">{{ object_list.medicamentos_en_falta }}</span>
+			{% endif %}
+		</h5>
         <div class="card-body">
-            
+        	<table class="table table-sm table-hover table-condensed" name="medvigentes">
+                <thead class="thead-light">
+                    <tr>
+                        <th scope="col">Paciente</th>
+                        <th scope="col">Medicamento</th>
+                        <th scope="col">Posología</th>
+                        <th scope="col">Recetado Por</th>
+                        <th scope="col">Fecha Inicio</th>
+                        <th scope="col">Fecha Fin</th>
+                        <th scope="col">Cantidad de dosis completadas</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for medicamento in object_list.medicamentos_sin_tomar %}
+                    <tr>
+                        <th scope="row"><a href='/pacientes/{{ medicamento.paciente_id }}'>{{ medicamento.paciente_id }}</a></th>
+                        <th>{{ medicamento.medicamento }}</th>
+                        {% if medicamento.posologia|intdiv:60 <= 24 %}
+                        <td>Cada {{ medicamento.posologia|intdiv:60 }} horas</td>
+                        {% elif medicamento.posologia|intdiv:60 <= 10080 %}
+                        <td>Cada {{ medicamento.posologia|intdiv:1440 }} días</td>
+                        {% elif medicamento.posologia|intdiv:60 <= 43200 %}
+                        <td>Cada {{ medicamento.posologia|intdiv:10080 }} semanas</td>
+                        {% else %}
+                        <td>Cada {{ medicamento.posologia|intdiv:43200 }} meses</td>
+                        {% endif %}
+                        <td>{{ medicamento.medico_id }}</td>
+                        <td>{{ medicamento.fecha_inicio }}</td>
+                        <td>{{ medicamento.fecha_fin }}</td>
+                        <td id="dosis-completadas-{{medicamento.id}}">{{ medicamento.dosis_completadas }}</td>
+                    </tr>
+                    {% endfor %}
+              </tbody>
+            </table>    
         </div>
     </div>
 

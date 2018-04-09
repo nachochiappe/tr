@@ -16,7 +16,11 @@
                 {% if request.user|has_group:"medicos" %}
                     <a class="nav-item nav-link" href='{% url "pacientes" %}'>Todos los Pacientes</a>
                     <a class="nav-item nav-link" href='{% url "medico_pacientes" user.get_username %}'>Mis Pacientes</a>
-                    <a class="nav-item nav-link" href='{% url "medico_alertas" user.get_username %}'>Mis Alertas</a>
+                    <a class="nav-item nav-link" href='{% url "medico_alertas" user.get_username %}'>Mis Alertas
+                        {% if object_list.medicamentos_en_falta > 0 %}
+                            <span class="badge badge-danger">{{ object_list.medicamentos_en_falta }}</span>
+                        {% endif %}
+                    </a>
                     <a class="nav-item nav-link" href='{% url "medico_agenda" user.get_username %}'>Agenda Médica</a>
                 {% elif request.user|has_group:"pacientes" %}
                     <a class="nav-item nav-link" href='{% url "paciente_detalle" user.get_username %}'>Mis Datos Personales</a>

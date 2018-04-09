@@ -49,14 +49,16 @@ class MedicoAlertasListView(LoginRequiredMixin, ListView):
         medicamentos_mis_pacientes = Medicamento.objects.filter(paciente_id__in=mis_pacientes).values()
         fecha_hoy = datetime.date.today()
         medicamentos_sin_tomar = []
+        medicamentos_en_falta = 0
         for medicamento in medicamentos_mis_pacientes:
             if medicamento['dosis_completadas'] < medicamento['dosis_a_tomar']:
                 medicamentos_sin_tomar.append(medicamento)
-        medicamentos_en_falta = 0
-        if medicamentos_sin_tomar:
-            medicamentos_en_falta = 1
-        print(medicamentos_sin_tomar)
-        return medicamentos_sin_tomar
+                medicamentos_en_falta = medicamentos_en_falta + 1
+        obj = {
+            'medicamentos_sin_tomar': medicamentos_sin_tomar,
+            'medicamentos_en_falta': medicamentos_en_falta
+        }
+        return obj
 
 
 # Detalle de Médico
