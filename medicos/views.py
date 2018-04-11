@@ -21,11 +21,11 @@ class MedicoListView(LoginRequiredMixin, ListView):
         slug = self.kwargs.get("slug")
         if slug:
             queryset = Medico.objects.filter(
-                Q(apellido__iexact=slug) |
-                Q(apellido__icontains=slug)
+                Q(usuario__last_name__iexact=slug) |
+                Q(usuario__last_name__icontains=slug)
             )
         else:
-            queryset = Medico.objects.all()
+            queryset = Medico.objects.all().order_by('usuario__last_name')
         return queryset
 
 
