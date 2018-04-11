@@ -11,6 +11,10 @@
 			{% endif %}
 		</h5>
         <div class="card-body">
+            <div class="pull-right search">
+                <input id="filter" class="form-control" type="text" placeholder="Buscar">
+            </div>
+            <br>
             <div class="table-responsive">
             	<table class="table table-sm table-hover table-condensed" name="medvigentes">
                     <thead class="thead-light">
@@ -24,7 +28,7 @@
                             <th scope="col">Cantidad de dosis completadas</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="searchable">
                         {% for medicamento in object_list.medicamentos_sin_tomar %}
                         <tr>
                             <th scope="row"><a href='/pacientes/{{ medicamento.paciente_id }}'>{{ medicamento.paciente_id }}</a></th>
