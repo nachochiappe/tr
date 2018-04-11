@@ -5,25 +5,27 @@
     <div class="card" style="margin-top: 15px;">
         <h5 class="card-header">Lista de Pacientes</h5>
         <div class="card-body">
+            <div class="pull-right search">
+                <input id="filter" class="form-control" type="text" placeholder="Buscar">
+            </div>
+            <br>
             <div class="table-responsive">
                 <table class="table table-sm table-striped table-condensed">
                     <thead class="thead-light">
                         <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Nombre</th>
                             <th scope="col">Apellido</th>
+                            <th scope="col">Nombre</th>
                             <th scope="col">Documento</th>
                             <th scope="col">Fecha de Nacimiento</th>
                             <th scope="col">País</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="searchable">
                         {% for paciente in object_list %}
                         <tr>
-                            <th scope="row"><a href='{{ paciente.get_absolute_url }}'>{{ forloop.counter }}</a></th>
+                            <td>{{ paciente.usuario.last_name|upper }}</td>
                             <td>{{ paciente.usuario.first_name }}</td>
-                            <td>{{ paciente.usuario.last_name }}</td>
-                            <td>{{ paciente.documento }}</td>
+                            <th><a href='{{ paciente.get_absolute_url }}'>{{ paciente.documento }}</a></th>
                             <td>{{ paciente.fecnac }}</td>
                             <td>{{ paciente.pais.name }}</td>
                         </tr>
