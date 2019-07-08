@@ -41,11 +41,18 @@ INSTALLED_APPS = [
     'django_countries',
     'crispy_forms',
     'mathfilters',
-
+    'schedule',
+ 
     'administradores',
     'medicos',
     'pacientes',
 ]
+
+EMAIL_HOST = 'smtp.mailgun.org'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'postmaster@sandbox537de643d89349ca96a185d04406ca92.mailgun.org'
+EMAIL_HOST_PASSWORD = '09e12e0f8572cac78c75014496202bd8-afab6073-a8fa6f8b'
+EMAIL_USE_TLS = True
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

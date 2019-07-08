@@ -18,17 +18,15 @@
 			<input type="text" id="username" name="username" class="form-control" placeholder="Usuario" required autofocus>
 			<label for="password" class="sr-only">Contraseña</label>
 			<input type="password" id="password" name="password" class="form-control" placeholder="Contraseña" required>
-			<div class="checkbox">
-				<label>
-					<input type="checkbox" value="recordarme">Recordarme
-				</label>
-			</div>
 			{% if form.errors %}
 			<h6><font color="red">Usuario y/o contraseña incorrectos. Por favor, intente nuevamente.</font></h6>
 			{% endif %}
 			<button class="btn btn-lg btn-primary btn-block" type="submit">Iniciar sesión</button>
 		</form>
     {% endif %}
+    <div class="d-flex justify-content-center">
+    	Si olvidaste tu contraseña hacé clic <a href="{% url 'password_reset' %}">acá</a>
+    </div>
 </div>
 
 {% endblock %}
