@@ -98,14 +98,17 @@ DATABASES = {
     #     'ENGINE': 'django.db.backends.sqlite3',
     #     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     # }
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'tr',
-        'USER': 'admin',
-        'PASSWORD': 'nacho6589',
-        'HOST': 'localhost',
-        'PORT': '',
-    }
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    #     'NAME': 'tr',
+    #     'USER': 'admin',
+    #     'PASSWORD': 'nacho6589',
+    #     'HOST': 'localhost',
+    #     'PORT': '',
+    # }
+    'default': dj_database_url.config(
+        default=config('DATABASE_URL')
+    )
 }
 
 
