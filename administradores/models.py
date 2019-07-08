@@ -11,7 +11,7 @@ class Administrador(models.Model):
     modificado = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        nombre_completo = self.apellido + ", " + self.nombre
+        nombre_completo = self.usuario.last_name + ", " + self.usuario.first_name
         return nombre_completo
 
     class Meta:
