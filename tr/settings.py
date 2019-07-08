@@ -107,7 +107,7 @@ DATABASES = {
     #     'PORT': '',
     # }
     'default': dj_database_url.config(
-        default=DATABASE_URL
+        default='postgres://admin:nacho6589@localhost/tr'
     )
 }
 
