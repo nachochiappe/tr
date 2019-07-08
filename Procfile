@@ -1,0 +1,1 @@
+web: gunicorn transactionrheumatology.wsgi
