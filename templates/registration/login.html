@@ -14,18 +14,21 @@
 	{% else %}
 		<form class="form-signin" name="LoginForm" method="POST" action="{% url 'login' %}">
 		{% csrf_token %}
+			<h1 class="h3 mb-3 font-weight-normal text-center">Por favor, inicie sesión</h1>
 			<label for="username" class="sr-only">Usuario</label>
 			<input type="text" id="username" name="username" class="form-control" placeholder="Usuario" required autofocus>
 			<label for="password" class="sr-only">Contraseña</label>
 			<input type="password" id="password" name="password" class="form-control" placeholder="Contraseña" required>
 			{% if form.errors %}
-			<h6><font color="red">Usuario y/o contraseña incorrectos. Por favor, intente nuevamente.</font></h6>
+			<h6 class="text-center"><font color="red">Usuario y/o contraseña incorrectos. Por favor, intente nuevamente.</font></h6>
 			{% endif %}
-			<button class="btn btn-lg btn-primary btn-block" type="submit">Iniciar sesión</button>
+			<div>
+				<button class="btn btn-lg btn-primary btn-block" type="submit">Iniciar sesión</button>
+			</div>
 		</form>
     {% endif %}
     <div class="d-flex justify-content-center">
-    	Si olvidaste tu contraseña hacé clic <a href="{% url 'password_reset' %}">acá</a>
+    	<p>Si olvidaste tu contraseña hacé clic <a href="{% url 'password_reset' %}">acá</a></p>
     </div>
 </div>
 
