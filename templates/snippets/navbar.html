@@ -11,31 +11,62 @@
                 </button>
             </div>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <div class="navbar-nav">
-                    <a class="nav-item nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                    </li>
                 {% if request.user|has_group:"medicos" %}
-                    <a class="nav-item nav-link" href='{% url "pacientes" %}'>Todos los Pacientes</a>
-                    <a class="nav-item nav-link" href='{% url "medico_pacientes" user.get_username %}'>Mis Pacientes</a>
-                    <a class="nav-item nav-link" href='{% url "medico_alertas" user.get_username %}'>Mis Alertas
+                    <li class="nav-item">
+                        <a class="nav-link" href='{% url "pacientes" %}'>Todos los Pacientes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href='{% url "medico_pacientes" user.get_username %}'>Mis Pacientes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href='{% url "medico_alertas" user.get_username %}'>Mis Alertas
                         {% if object_list.medicamentos_en_falta > 0 %}
                             <span class="badge badge-danger">{{ object_list.medicamentos_en_falta }}</span>
                         {% endif %}
-                    </a>
-                    <a class="nav-item nav-link" href='{% url "medico_agenda" user.get_username %}'>Agenda Médica</a>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href='{% url "medico_agenda" user.get_username %}'>Agenda Médica</a>
+                    </li>
                 {% elif request.user|has_group:"pacientes" %}
-                    <a class="nav-item nav-link" href='{% url "paciente_detalle" user.get_username %}'>Mis Datos Personales</a>
-                    <a class="nav-item nav-link" href='{% url "paciente_medicamentos" user.get_username %}'>Mis Medicaciones</a>
-                    <a class="nav-item nav-link" href='{% url "paciente_estudios" user.get_username %}'>Mis Estudios</a>
-                    <a class="nav-item nav-link" href='{% url "paciente_alertas" user.get_username %}'>Mis Alertas</a>
+                    <li class="nav-item">
+                        <a class="nav-link" href='{% url "paciente_detalle" user.get_username %}'>Mis Datos Personales</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href='{% url "paciente_medicamentos" user.get_username %}'>Mis Medicaciones</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href='{% url "paciente_estudios" user.get_username %}'>Mis Estudios</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href='{% url "paciente_alertas" user.get_username %}'>Mis Alertas</a>
+                    </li>
                 {% else %}
-                    <a class="nav-item nav-link" href='{% url "especialidad_crear" %}'>Nueva Especialidad</a>
-                    <a class="nav-item nav-link" href='{% url "especialidades" %}'>Todas las Especialidades</a>
-                    <a class="nav-item nav-link" href='{% url "medico_crear" %}'>Nuevo Médico</a>
-                    <a class="nav-item nav-link" href='{% url "medicos" %}'>Todos los Médicos</a>
-                    <a class="nav-item nav-link" href='{% url "paciente_crear" %}'>Nuevo Paciente</a>
-                    <a class="nav-item nav-link" href='{% url "pacientes" %}'>Todos los Pacientes</a>
+                    <li class="nav-item">
+                        <a class="nav-link" href='{% url "especialidad_crear" %}'>Nueva Especialidad</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href='{% url "especialidades" %}'>Todas las Especialidades</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href='{% url "medico_crear" %}'>Nuevo Médico</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href='{% url "medicos" %}'>Todos los Médicos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href='{% url "paciente_crear" %}'>Nuevo Paciente</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href='{% url "pacientes" %}'>Todos los Pacientes</a>
+                    </li>
                 {% endif %}
-                    <a class="nav-item nav-link" href='{% url "logout" %}'><strong>Cerrar Sesión</strong></a>
+                </ul>
+                    <a class="btn btn-outline-light my-2 my-sm-0" href='{% url "logout" %}'>Cerrar Sesión</a>
                 </div>
             </div>
         </div>

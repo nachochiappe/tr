@@ -12,28 +12,28 @@
                         <table class="table table-user-information">
                             <tbody>
                                 <tr>
-                                    <td>Nombre</td>
+                                    <td>NOMBRE</td>
                                     <td>{{ object.paciente.usuario.first_name }}</td>
                                     <input type="hidden" name="id_paciente" value="{{object.paciente.id}}">
                                 </tr>
                                 <tr>
-                                    <td>Apellido</td>
+                                    <td>APELLIDO</td>
                                     <td>{{ object.paciente.usuario.last_name}}</td>
                                 </tr>
                                 <tr>
-                                    <td>Documento</td>
+                                    <td>DOCUMENTO</td>
                                     <td>{{ object.paciente.documento }}</td>
                                 </tr>
                                 <tr>
-                                    <td>Fecha de Nacimiento</td>
+                                    <td>FECHA DE NACIMIENTO</td>
                                     <td>{{ object.paciente.fecnac }}</td>
                                 </tr>
                                 <tr>
-                                    <td>País</td>
+                                    <td>NACIONALIDAD</td>
                                     <td>{{ object.paciente.pais.name }}</td>
                                 </tr>
                                 <tr>
-                                    <td>E-Mail</td>
+                                    <td>E-MAIL</td>
                                     <td>{{ object.paciente.usuario.email }}</td>
                                 </tr>
                             </tbody>
@@ -310,7 +310,6 @@
                     <div class="list-group">
                         <a href="#" class="list-group-item list-group-item-action derivar-paciente" data-toggle="modal" data-target="#derivarPacienteModal">Derivar paciente</a>
                         <a class="list-group-item list-group-item-action">Enviar correo electrónico al paciente</a>
-                        <a class="list-group-item list-group-item-action">Enviar mensaje (dentro de TR)</a>
                     </div>
                 </div>
             </div>
