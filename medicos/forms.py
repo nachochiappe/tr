@@ -24,7 +24,7 @@ class UserMedicoCreateForm(forms.ModelForm):
         labels = {
             "first_name" : "Nombre",
             "last_name" : "Apellido",
-            "email" : "E-Mail",
+            "email" : "Email",
             "documento" : "Documento",
             "especialidad" : "Especialidad",
         }

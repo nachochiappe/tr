@@ -1,4 +1,6 @@
 from django import forms
+#from crispy_forms.helper import FormHelper
+#from crispy_forms.layout import Layout, MultiWidgetField
 from django_countries.fields import LazyTypedChoiceField
 from django_countries.widgets import CountrySelectWidget
 from django_countries import countries
@@ -10,11 +12,15 @@ import datetime
 
 class PacienteCreateForm(forms.ModelForm):
 
-    anio = datetime.datetime.now().year
+    anio = datetime.datetime.now().year + 1
     BIRTH_YEAR_CHOICES = (
         [i for i in reversed(range(1900,anio))]
     )
     fecnac = forms.DateField(widget = forms.SelectDateWidget(years=BIRTH_YEAR_CHOICES))
+    # fecnac.layout = Layout(
+    #     MultiWidgetField('days', attrs=({'style': 'width: 33%; display: inline-block;'})),
+    #     MultiWidgetField('months', attrs=({'style': 'width: 33%; display: inline-block;'})),
+    #     MultiWidgetField('years', attrs=({'style': 'width: 33%; display: inline-block;'})))
     fecnac.label = "Fecha de Nacimiento"
     documento = forms.IntegerField()
     pais = LazyTypedChoiceField(choices=countries)
@@ -27,7 +33,7 @@ class PacienteCreateForm(forms.ModelForm):
             "first_name" : "Nombre",
             "last_name" : "Apellido",
             "documento" : "Documento",
-            "email" : "E-Mail",
+            "email" : "Email",
             "pais" : "País",
             "medico" : "Médico",
         }

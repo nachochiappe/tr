@@ -10,8 +10,8 @@
 	    <h5 class="card-header">Crear Especialidad</h5>
 	    <div class="card-body">
 		    <form method="POST"> {% csrf_token %}
-		        {{ form.as_p }}
-		        <button type="submit">Guardar</button>
+		        {{ form|crispy }}
+		        <button type="submit" class="btn btn-primary">Guardar</button>
 		    </form>
 		</div>
 	</div>

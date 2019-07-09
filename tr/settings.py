@@ -48,6 +48,8 @@ INSTALLED_APPS = [
     'pacientes',
 ]
 
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
 EMAIL_HOST = 'smtp.mailgun.org'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'postmaster@sandbox537de643d89349ca96a185d04406ca92.mailgun.org'
