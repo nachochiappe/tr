@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '*4*x8mjvzis7x2x1&jzvlg6y(j+u)f4hr+xp7@8ah38h@-v)3f'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -53,7 +53,7 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 EMAIL_HOST = 'smtp.mailgun.org'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'postmaster@sandbox537de643d89349ca96a185d04406ca92.mailgun.org'
-EMAIL_HOST_PASSWORD = '09e12e0f8572cac78c75014496202bd8-afab6073-a8fa6f8b'
+EMAIL_HOST_PASSWORD = '76f04e7f5ec502569ec3d431bc1ae04d-afab6073-89fee721'
 EMAIL_USE_TLS = True
 
 MIDDLEWARE = [
