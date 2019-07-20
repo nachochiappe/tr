@@ -52,8 +52,8 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 EMAIL_HOST = 'smtp.mailgun.org'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'postmaster@sandbox537de643d89349ca96a185d04406ca92.mailgun.org'
-EMAIL_HOST_PASSWORD = '76f04e7f5ec502569ec3d431bc1ae04d-afab6073-89fee721'
+EMAIL_HOST_USER = 'admin@transactionrheumatology.com.ar'
+EMAIL_HOST_PASSWORD = '84f70dc29524e80b70e5080fc97f9ab4-fd0269a6-4c92a712'
 EMAIL_USE_TLS = True
 
 MIDDLEWARE = [
