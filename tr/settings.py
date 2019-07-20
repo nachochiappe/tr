@@ -55,6 +55,7 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'admin@transactionrheumatology.com.ar'
 EMAIL_HOST_PASSWORD = '84f70dc29524e80b70e5080fc97f9ab4-fd0269a6-4c92a712'
 EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
