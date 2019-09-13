@@ -125,8 +125,7 @@
                                             <td>{{ medicamento.fecha_fin }}</td>
                                             <td id="dosis-completadas-{{medicamento.id}}">{{ medicamento.dosis_completadas }}</td>
                                             <td><input type="button" class="ibtnTomar btn btn-sm btn-success" id="tomar-{{medicamento.id}}" value="Tomar Medicación">
-                                                <input type="button" class="ibtnEdit btn btn-sm btn-info" id="editar-{{medicamento.id}}" value="Editar">
-                                                <input type="button" class="ibtnBorrar btn btn-sm btn-danger" id="borrar-{{medicamento.id}}" data-toggle="modal" data-target="#medicamentoModal" value="Borrar"></td>
+                                            <input type="button" class="ibtnBorrar btn btn-sm btn-danger" id="borrar-{{medicamento.id}}" data-toggle="modal" data-target="#medicamentoModal" value="Borrar"></td>
                                         </tr>
                                         {% endfor %}
                                   </tbody>
@@ -235,8 +234,7 @@
                                             <td>{{ estudio.fecha_solicitud }}</td>
                                             <td id="estado-estudio-{{estudio.id}}">Pendiente</td>
                                             <td><input type="button" class="ibtnCompletar btn btn-sm btn-success" id="completar-{{estudio.id}}" value="Completar Estudio">
-                                                <input type="button" class="ibtnEdit btn btn-sm btn-info" id="editarest-{{estudio.id}}" value="Editar">
-                                                <input type="button" class="ibtnBorrarEst btn btn-sm btn-danger" data-toggle="modal" data-target="#estudioModal"  id="borrarest-{{estudio.id}}" value="Borrar"></td>
+                                            <input type="button" class="ibtnBorrarEst btn btn-sm btn-danger" data-toggle="modal" data-target="#estudioModal"  id="borrarest-{{estudio.id}}" value="Borrar"></td>
                                         </tr>
                                         {% endfor %}
                                   </tbody>
@@ -298,6 +296,7 @@
                 </div>
             </div>
         </div>
+        {% if request.user.is_staff %}
         <div class="card">
             <div class="card-header" role="tab" id="headingThree">
                 <h6 class="mb-0">
@@ -346,5 +345,6 @@
                 </div>
             </div>
         </div>
+        {% endif %}
     </div>
 {% endblock %}

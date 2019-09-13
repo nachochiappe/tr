@@ -15,7 +15,6 @@ from medicos.models import Medico, Especialidad
 
 # Create your views here.
 
-
 # Lista de Pacientes
 class PacienteListView(LoginRequiredMixin, ListView):
     template_name = 'pacientes/paciente_list.html'
