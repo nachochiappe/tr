@@ -2,6 +2,8 @@
 
 {% load mathfilters %}
 
+{% load main_extras %}
+
 {% block content %}
     <div class="card" style="margin-top: 15px;">
         <h5 class="card-header">Detalle del Paciente</h5>
@@ -14,7 +16,7 @@
                                 <tr>
                                     <td>NOMBRE</td>
                                     <td>{{ object.paciente.usuario.first_name }}</td>
-                                    <input type="hidden" name="id_paciente" value="{{object.paciente.id}}">
+                                    <input type="hidden" name="id_paciente" value="{{object.paciente.documento}}">
                                 </tr>
                                 <tr>
                                     <td>APELLIDO</td>
@@ -44,7 +46,7 @@
         </div>
         {% if request.user.is_staff %}
         <div class="card-footer">
-            <button type="button" class="btn btn-info btn-sm">Editar Datos</button>
+            {# <button type="button" class="btn btn-info btn-sm">Editar Datos</button> #}
             <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#pacienteModal">Eliminar Paciente</button>
         </div>
 
@@ -87,7 +89,10 @@
                     <div class="card">
                         <h6 class="card-header">Medicaciones Actuales</h6>
                         <div class="card-body">
+
+                            {% if request.user|has_not_group:"pacientes" %}
                             <input type="button" class="btn btn-success btn-sm" id="nuevafilamed" value="+ Nueva Medicación"></br></br>
+                            {% endif %}
 
                             <form method="POST" id="form_medicamento">{% csrf_token %}</form>
                             <div class="table-responsive">
@@ -120,12 +125,14 @@
                                             {% else %}
                                             <td>Cada {{ medicamento.posologia|intdiv:43200 }} meses</td>
                                             {% endif %}
-                                            <td>{{ medicamento.medico_id }}</td>
+                                            <td>{{ medicamento.medico }}</td>
                                             <td>{{ medicamento.fecha_inicio }}</td>
                                             <td>{{ medicamento.fecha_fin }}</td>
                                             <td id="dosis-completadas-{{medicamento.id}}">{{ medicamento.dosis_completadas }}</td>
                                             <td><input type="button" class="ibtnTomar btn btn-sm btn-success" id="tomar-{{medicamento.id}}" value="Tomar Medicación">
+                                            {% if request.user|has_not_group:"pacientes" %}
                                             <input type="button" class="ibtnBorrar btn btn-sm btn-danger" id="borrar-{{medicamento.id}}" data-toggle="modal" data-target="#medicamentoModal" value="Borrar"></td>
+                                            {% endif %}
                                         </tr>
                                         {% endfor %}
                                   </tbody>
@@ -183,7 +190,7 @@
                                             {% else %}
                                             <td>Cada {{ medicamento.posologia|intdiv:43200 }} meses</td>
                                             {% endif %}
-                                            <td>{{ medicamento.medico.apellido }}, {{ medicamento.medico.nombre }}</td>
+                                            <td>{{ medicamento.medico }}</td>
                                             <td>{{ medicamento.fecha_inicio }}</td>
                                             <td>{{ medicamento.fecha_fin }}</td>
                                             <td>{{ medicamento.dosis_completadas }}</td>
@@ -212,7 +219,10 @@
                     <div class="card">
                         <h6 class="card-header">Estudios/Actividades Pendientes</h6>
                         <div class="card-body">
+
+                            {% if request.user|has_not_group:"pacientes" %}
                             <input type="button" class="btn btn-success btn-sm" id="nuevafilaest" value="+ Nuevo Estudio o Actividad"></br></br>
+                            {% endif %}
 
                             <form method="POST" id="form_estudio">{% csrf_token %}</form>
                             <div class="table-responsive">
@@ -230,7 +240,7 @@
                                         {% for estudio in object.estudios_vigentes %}
                                         <tr>
                                             <th scope="row">{{ estudio.estudio }}</th>
-                                            <td>{{ estudio.medico_id }}</td>
+                                            <td>{{ estudio.medico }}</td>
                                             <td>{{ estudio.fecha_solicitud }}</td>
                                             <td id="estado-estudio-{{estudio.id}}">Pendiente</td>
                                             <td><input type="button" class="ibtnCompletar btn btn-sm btn-success" id="completar-{{estudio.id}}" value="Completar Estudio">
@@ -282,7 +292,7 @@
                                         {% for estudio in object.estudios_novigentes %}
                                         <tr>
                                             <th scope="row">{{ estudio.estudio }}</th>
-                                            <td>{{ estudio.medico_id }}</td>
+                                            <td>{{ estudio.medico }}</td>
                                             <td>{{ estudio.fecha_solicitud }}</td>
                                             <td>{{ estudio.fecha_completado }}</td>
                                             <td>Completado</td>

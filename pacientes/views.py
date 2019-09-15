@@ -36,7 +36,8 @@ class PacienteListView(LoginRequiredMixin, ListView):
 def obtener_obj(self, *args, **kwargs):
     paciente_id = self.kwargs.get('id')
     paciente = get_object_or_404(Paciente, documento=paciente_id)
-    medicamentos_vigentes = Medicamento.objects.filter(paciente=paciente).select_related().values()
+    todos_los_medicamentos = Medicamento.objects.filter(paciente=paciente)
+    medicamentos_vigentes = Medicamento.objects.filter(paciente=paciente).select_related()
     medicamentos_vigentes = medicamentos_vigentes.filter(fecha_fin__gte=datetime.date.today())
     fecha_hoy = datetime.date.today()
     medicamentos_sin_tomar = []
@@ -46,11 +47,11 @@ def obtener_obj(self, *args, **kwargs):
     medicamentos_en_falta = 0
     if medicamentos_sin_tomar:
         medicamentos_en_falta = 1
-    medicamentos_novigentes = Medicamento.objects.filter(paciente=paciente).select_related().values()
+    medicamentos_novigentes = Medicamento.objects.filter(paciente=paciente).select_related()
     medicamentos_novigentes = medicamentos_novigentes.filter(fecha_fin__lt=datetime.date.today())
-    estudios_vigentes = Estudio.objects.filter(paciente=paciente).select_related().values()
+    estudios_vigentes = Estudio.objects.filter(paciente=paciente).select_related()
     estudios_vigentes = estudios_vigentes.filter(fecha_completado__isnull=True)
-    estudios_novigentes = Estudio.objects.filter(paciente=paciente).select_related().values()
+    estudios_novigentes = Estudio.objects.filter(paciente=paciente).select_related()
     estudios_novigentes = estudios_novigentes.filter(fecha_completado__isnull=False)
     obj = {
         'paciente': paciente,
@@ -228,8 +229,7 @@ def obtener_medicos(request, id):
 
 def derivar_paciente(request):
     if request.method == 'POST':
-        print(request.POST)
         id_paciente = request.POST['id_paciente']
         id_medico = request.POST['id_medico']
-        paciente = Paciente.objects.filter(id=id_paciente).select_related().update(medico=id_medico)
+        paciente = Paciente.objects.filter(documento=id_paciente).select_related().update(medico=id_medico)
     return HttpResponse()

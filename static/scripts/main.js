@@ -189,7 +189,9 @@ function obtenerMedicos() {
 			for (var i = 0; i < data.medicos.length; i++) {
 				var medico = data.medicos[i];
 				$(lista_medicos).append('<option>' + medico.nombre + '</option>');
-				$(lista_medicos).append('<input type="hidden" name="' + medico.nombre + '" value="' + medico.documento + '">');
+				var nombre_medico = medico.nombre
+				nombre_medico = nombre_medico.replace(', ', '');
+				$(lista_medicos).append('<input type="hidden" name="' + nombre_medico + '" value="' + medico.documento + '">');
 			}
 		}
 	});	
