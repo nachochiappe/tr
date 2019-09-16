@@ -226,3 +226,29 @@ $(document).on('click', '.ibtnDerivar', function() {
 });
 
 // ELIMINAR PACIENTE
+
+$(document).on('click', '.ibtnEliminar', function() {
+	var csrftoken = Cookies.get('csrftoken');
+	function csrfSafeMethod(method) {
+	    // Estos métodos HTTP no requieren protección CSRF
+	    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+	}
+	id_paciente = $('input[name=id_paciente]').val();
+	$.ajax({
+		url: '/ajax/eliminar_paciente/',
+		type: "POST",
+		data: {
+			'id_paciente': id_paciente,
+		},
+		beforeSend: function(xhr, settings) {
+	        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+	            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+	        }
+	    },
+		success: function(data) {
+			$("#eliminar_modal_body").append('<div class="alert alert-success alert-dismissible fade show" role="alert">Paciente eliminado.<button type="button" class="close" data-dismiss="alert" aria-label="Cerrar"><span aria-hidden="true">&times;</span></button></div>');
+			$(".ibtnEliminar").remove();
+			$(".ibtnCerrar").attr("onClick", "location.href='/pacientes/';");
+		}
+	});
+});

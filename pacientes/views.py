@@ -233,3 +233,9 @@ def derivar_paciente(request):
         id_medico = request.POST['id_medico']
         paciente = Paciente.objects.filter(documento=id_paciente).select_related().update(medico=id_medico)
     return HttpResponse()
+
+def eliminar_paciente(request):
+    if request.method == 'POST':
+        id_paciente = request.POST['id_paciente']
+        paciente = Paciente.objects.filter(documento=id_paciente).select_related().delete()
+    return HttpResponse()    
