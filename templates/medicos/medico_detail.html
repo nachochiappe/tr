@@ -13,7 +13,7 @@
                                 <tr>
                                     <td>NOMBRE</td>
                                     <td>{{ object.usuario.first_name }}</td>
-                                    <input type="hidden" name="id_medico" value="{{object.medico.id}}">
+                                    <input type="hidden" name="id_medico" value="{{object.documento}}">
                                 </tr>
                                 <tr>
                                     <td>APELLIDO</td>
@@ -49,12 +49,12 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body" id="eliminar_modal_body">
                         ¿Está seguro de que desea eliminar el médico?
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Cerrar</button>
-                        <button type="button" class="btn btn-sm btn-danger">Eliminar</button>
+                    <div class="modal-footer" id="eliminar_modal_footer">
+                        <button type="button" class="btn btn-sm btn-secondary ibtnCerrar" data-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-sm btn-danger ibtnEliminarM">Eliminar</button>
                     </div>
                 </div>
             </div>

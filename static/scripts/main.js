@@ -227,18 +227,18 @@ $(document).on('click', '.ibtnDerivar', function() {
 
 // ELIMINAR PACIENTE
 
-$(document).on('click', '.ibtnEliminar', function() {
+$(document).on('click', '.ibtnEliminarP', function() {
 	var csrftoken = Cookies.get('csrftoken');
 	function csrfSafeMethod(method) {
 	    // Estos métodos HTTP no requieren protección CSRF
 	    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
 	}
-	id_paciente = $('input[name=id_paciente]').val();
+	id = $('input[name=id_paciente]').val();
 	$.ajax({
 		url: '/ajax/eliminar_paciente/',
 		type: "POST",
 		data: {
-			'id_paciente': id_paciente,
+			'id': id,
 		},
 		beforeSend: function(xhr, settings) {
 	        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
@@ -247,8 +247,37 @@ $(document).on('click', '.ibtnEliminar', function() {
 	    },
 		success: function(data) {
 			$("#eliminar_modal_body").append('<div class="alert alert-success alert-dismissible fade show" role="alert">Paciente eliminado.<button type="button" class="close" data-dismiss="alert" aria-label="Cerrar"><span aria-hidden="true">&times;</span></button></div>');
-			$(".ibtnEliminar").remove();
+			$(".ibtnEliminarP").remove();
 			$(".ibtnCerrar").attr("onClick", "location.href='/pacientes/';");
+		}
+	});
+});
+
+// ELIMINAR PACIENTE
+
+$(document).on('click', '.ibtnEliminarM', function() {
+	var csrftoken = Cookies.get('csrftoken');
+	function csrfSafeMethod(method) {
+	    // Estos métodos HTTP no requieren protección CSRF
+	    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+	}
+	id = $('input[name=id_medico]').val();
+	console.log(id);
+	$.ajax({
+		url: '/ajax/eliminar_medico/',
+		type: "POST",
+		data: {
+			'id': id,
+		},
+		beforeSend: function(xhr, settings) {
+	        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+	            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+	        }
+	    },
+		success: function(data) {
+			$("#eliminar_modal_body").append('<div class="alert alert-success alert-dismissible fade show" role="alert">Médico eliminado.<button type="button" class="close" data-dismiss="alert" aria-label="Cerrar"><span aria-hidden="true">&times;</span></button></div>');
+			$(".ibtnEliminarM").remove();
+			$(".ibtnCerrar").attr("onClick", "location.href='/medicos/';");
 		}
 	});
 });
