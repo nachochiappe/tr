@@ -46,12 +46,16 @@ class MedicoAlertasListView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         medico_documento = self.request.user.username
         mis_pacientes = Paciente.objects.filter(medico_id=medico_documento).select_related().values_list('documento', flat=True)
-        medicamentos_mis_pacientes = Medicamento.objects.filter(paciente_id__in=mis_pacientes).values()
+        medicamentos_mis_pacientes = Medicamento.objects.filter(paciente_id__in=mis_pacientes).select_related()
+        medicamentos_mis_pacientes = medicamentos_mis_pacientes.filter(fecha_fin__gte=datetime.date.today())
         fecha_hoy = datetime.date.today()
         medicamentos_sin_tomar = []
         medicamentos_en_falta = 0
         for medicamento in medicamentos_mis_pacientes:
-            if medicamento['dosis_completadas'] < medicamento['dosis_a_tomar']:
+            dif_dias = (fecha_hoy - medicamento.fecha_inicio).days
+            dif_dias_en_minutos = dif_dias * 24 * 60
+            dosis_esperadas = dif_dias_en_minutos / medicamento.posologia
+            if medicamento.dosis_completadas < dosis_esperadas:
                 medicamentos_sin_tomar.append(medicamento)
                 medicamentos_en_falta = medicamentos_en_falta + 1
         obj = {

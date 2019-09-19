@@ -23,11 +23,7 @@
                         <a class="nav-link" href='{% url "medico_pacientes" user.get_username %}'>Mis Pacientes</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href='{% url "medico_alertas" user.get_username %}'>Mis Alertas
-                        {% if object_list.medicamentos_en_falta > 0 %}
-                            <span class="badge badge-danger">{{ object_list.medicamentos_en_falta }}</span>
-                        {% endif %}
-                        </a>
+                        <a class="nav-link" href='{% url "medico_alertas" user.get_username %}'>Mis Alertas</a>
                     </li>
                 {% elif request.user|has_group:"pacientes" %}
                     <li class="nav-item">

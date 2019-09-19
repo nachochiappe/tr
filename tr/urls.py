@@ -39,6 +39,7 @@ urlpatterns = [
     url(r'^ajax/eliminar_medico/$', eliminar_medico, name='eliminar_medico'),
     url(r'^ajax/obtener_especialidades/$', obtener_especialidades, name='obtener_especialidades'),
     url(r'^ajax/obtener_medicos/(?P<id>\w+)/$', obtener_medicos, name='obtener_medicos'),
+    url(r'^ajax/enviar_recordatorio/$', enviar_recordatorio, name='enviar_recordatorio'),
     url(r'^pacientes/crear/$', PacienteCreateView.as_view(), name='paciente_crear'),
     # url(r'^pacientes/(?P<id>\w+)/alertas/$', PacienteDetailView.as_view(), name='paciente_alertas'),
     # url(r'^pacientes/(?P<id>\w+)/medicamentos/$', PacienteDetailView.as_view(), name='paciente_medicamentos'),

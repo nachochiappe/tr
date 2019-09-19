@@ -6,6 +6,9 @@ from django.views.generic.detail import SingleObjectMixin
 from django.contrib.auth.models import User, Group
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse, JsonResponse
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
 
 import datetime
 
@@ -42,8 +45,11 @@ def obtener_obj(self, *args, **kwargs):
     fecha_hoy = datetime.date.today()
     medicamentos_sin_tomar = []
     for medicamento in medicamentos_vigentes:
-        if medicamento['dosis_completadas'] < medicamento['dosis_a_tomar']:
-            medicamentos_sin_tomar.append(medicamento['medicamento'])
+        dif_dias = (fecha_hoy - medicamento.fecha_inicio).days
+        dif_dias_en_minutos = dif_dias * 24 * 60
+        dosis_esperadas = dif_dias_en_minutos / medicamento.posologia
+        if medicamento.dosis_completadas < dosis_esperadas:
+            medicamentos_sin_tomar.append(medicamento.medicamento)
     medicamentos_en_falta = 0
     if medicamentos_sin_tomar:
         medicamentos_en_falta = 1
@@ -243,6 +249,17 @@ def eliminar_paciente(request):
 def eliminar_medico(request):
     if request.method == 'POST':
         id_medico = request.POST['id']
-        print(id_medico)
         medico = Medico.objects.filter(documento=id_medico).select_related().delete()
+    return HttpResponse()
+
+def enviar_recordatorio(request):
+    if request.method == 'POST':
+        id_paciente = request.POST['id']
+        paciente = Paciente.objects.filter(documento=id_paciente).select_related().get()
+        subject = 'TR - Transaction Rheumatology: Recordatorio de medicamentos'
+        html_message = render_to_string('mail_template.html', {'context': 'values'})
+        plain_message = strip_tags(html_message)
+        from_email = 'TR - Transaction Rheumatology <admin@transactionrheumatology.com.ar>'
+        to = paciente.usuario.email
+        send_mail(subject, plain_message, from_email, [to], html_message=html_message, fail_silently=False)
     return HttpResponse()
